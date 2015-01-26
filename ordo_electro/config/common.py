@@ -111,7 +111,7 @@ class Common(Configuration):
 
     # DATABASE CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue('postgres://localhost/ordo_electro')
+    DATABASES = values.DatabaseURLValue('mysql://root:@localhost/ordo_electro')
     # END DATABASE CONFIGURATION
 
     # CACHING
