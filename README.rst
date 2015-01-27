@@ -55,6 +55,8 @@ http://blog.joefallon.net/2013/10/install-mysql-on-mac-osx-using-homebrew/
 
 start mysql and add the database
 
+	mysql.server start
+
 	CREATE DATABASE ordo_electro
 
 Clone the repo
