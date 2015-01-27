@@ -43,6 +43,31 @@ The steps below will get you up and running with a local development environment
 * pip
 * virtualenv
 * PostgreSQL
+* Memcache
+
+Install memcache if you don't have it
+
+	brew install libmemcached
+
+I'm using mysql so make sure that you have that running as well. Install it with brew. 
+
+http://blog.joefallon.net/2013/10/install-mysql-on-mac-osx-using-homebrew/
+
+start mysql and add the database
+
+	CREATE DATABASE ordo_electro
+
+Clone the repo
+
+	mkvirtualenv oe
+	git clone https://github.com/solvire/ordo_electro.git
+	cd ordo_electro/
+
+Don't start activating things until you have a virtualenv set up
+
+Update your config to point to the right database:
+
+	vim ordo_electro/config/common.py
 
 First make sure to create and activate a virtualenv_, then open a terminal at the project root and install the requirements for local development::
 
