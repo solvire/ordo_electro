@@ -42,6 +42,8 @@ class Common(Configuration):
         'allauth',  # registration
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
+        'twython', #twython twitter API app
+        'social_content', #tools for managing social content 
     )
 
     # Apps specific for this project go here.

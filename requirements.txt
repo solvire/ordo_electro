@@ -6,4 +6,5 @@ pylibmc==1.4.1
 django-heroku-memcacheify==0.8
 django-debug-toolbar==1.2.2
 django-extensions==1.4.9
+twython==3.2.0
 -r requirements/production.txt
