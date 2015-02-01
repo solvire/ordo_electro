@@ -35,9 +35,18 @@
 
     <div class="header navbar">
       <div class="container">
-        <a class="navbar-brand" href="/">ordo_electro</a>
+        <a class="navbar-brand" href="/">Ordo Electro</a>
         <ul class="nav navbar-nav">
           <li class="active"><a href="{% url 'home' %}">Home</a></li>
+          <li class="dropdown">
+	          <a  class="dropdown-toggle" data-toggle="dropdown" href="#">Social Content
+	          <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="{% url 'quotes' %}">Quotes</a></li>
+	            <li><a href="{% url 'quote_scheduler' %}">Quote Scheduler</a></li>
+	            <li><a href="#">Page 1-3</a></li>
+	          </ul>
+          </li>
           <li><a href="{% url 'about' %}">About</a></li>
 
           {% if request.user.is_authenticated %}

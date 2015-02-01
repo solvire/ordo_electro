@@ -1,0 +1,18 @@
+{% extends "quote_scheduler/base.html" %}
+{% load i18n avatar_tags %}
+{% load url from future %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+        <h2>Schedule New Quotes From File:</h2>
+        <form enctype="multipart/form-data" method="POST" action="{% url 'avatar_add' %}">
+            <p>{% csrf_token %}
+            <input type="file" name="content_file" />
+            <input type="submit" value="{% trans "Upload New Image" %}" /></p>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

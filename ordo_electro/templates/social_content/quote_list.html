@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Social Content - Quotes{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>Quotes</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="list-group">
+          {% for quote in quote_list %}
+            <a href="" class="list-group-item">
+              <h4 class="list-group-item-heading">{{ quote.quote_text_small }}</h4>
+              <p class="list-group-item-text">Created: {{ quote.created }} Updated: {{ quote.updated }}</p>
+              <p class="list-group-item-text">Score: {{ quote.score }}</p>
+            </a>
+          {% endfor %}
+        
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}
