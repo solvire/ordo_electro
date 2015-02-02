@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from os.path import join, dirname
+from os.path import join, dirname, expanduser
 
 from configurations import Configuration, values
+from ConfigParser import RawConfigParser
 
 BASE_DIR = dirname(dirname(__file__))
 
@@ -272,3 +273,16 @@ class Common(Configuration):
         cls.DATABASES['default']['ATOMIC_REQUESTS'] = True
 
     # Your common stuff: Below this line define 3rd party library settings
+    
+    ####  get the users personal settings 
+    config = RawConfigParser()
+    config.read(expanduser('~') + '/.ordo_electro/settings.ini')
+    
+    TWITTER_KEY = config.get('secrets', 'TWITTER_KEY')
+    TWITTER_SECRET = config.get('secrets', 'TWITTER_SECRET')
+    OAUTH_TOKEN = config.get('secrets', 'OAUTH_TOKEN')
+    OAUTH_TOKEN_SECRET = config.get('secrets', 'OAUTH_TOKEN_SECRET')
+    
+    LOGOUT_URL='account_logout'
+    LOGOUT_REDIRECT_URL='/'
+    

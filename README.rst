@@ -71,6 +71,17 @@ Update your config to point to the right database:
 
 	vim ordo_electro/config/common.py
 
+Make sure to add your keys for the various apps in:
+
+	/Users/USERNAME/.ordo_electro/settings.ini
+
+	[secrets]
+	TWITTER_KEY: abasdflkj
+	TWITTER_SECRET: 409avnlkadlfkk
+	
+Note: these will change and be moved to the DB at some point. 
+
+
 First make sure to create and activate a virtualenv_, then open a terminal at the project root and install the requirements for local development::
 
     $ pip install -r requirements/local.txt
