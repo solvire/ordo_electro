@@ -16,4 +16,7 @@ class TwitterProfile(models.Model):
     user = models.OneToOneField(User)
     oauth_token = models.CharField(max_length=200)
     oauth_secret = models.CharField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
 

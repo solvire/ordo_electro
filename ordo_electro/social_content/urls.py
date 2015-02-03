@@ -32,4 +32,9 @@ urlpatterns = patterns('',
         view=views.TwitterTimeline.as_view(), 
         name="twitter_timeline"
     ),
+    url(
+        regex=r'^content_dashboard', 
+        view=views.ContentDashbaord.as_view(), 
+        name="content_dashboard"
+    ),
 )

@@ -45,7 +45,19 @@ class TwitterTimeline(TemplateView):
         
         context = super(TwitterTimeline, self).get_context_data(**kwargs)
         context['tweets'] = twitter.get_favorites()
-        context['setting'] = settings.TWITTER_KEY
+        return context
+    
+class ContentDashbaord(TemplateView):
+    """Main Dashboard"""
+    permanent = False
+    template_name = 'social_content/content_dashboard.html'
+    
+    def get_context_data(self, **kwargs):
+        twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET,
+                          settings.OAUTH_TOKEN, settings.OAUTH_TOKEN_SECRET)
+        
+        context = super(TwitterTimeline, self).get_context_data(**kwargs)
+        context['tweets'] = twitter.get_favorites()
         return context
     
     
