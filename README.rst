@@ -65,7 +65,7 @@ Clone the repo
 	git clone https://github.com/solvire/ordo_electro.git
 	cd ordo_electro/
 
-Don't start activating things until you have a virtualenv set up
+Don't start activating things until you have a virtualenv set up. mkvirtualenv should have activated you already.
 
 Update your config to point to the right database:
 
