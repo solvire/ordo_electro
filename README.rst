@@ -70,6 +70,12 @@ Don't start activating things until you have a virtualenv set up. mkvirtualenv s
 Update your config to point to the right database:
 
 	vim ordo_electro/config/common.py
+	
+You may use your own DB settings based on what you will be using. Assumed mysql local root:''
+
+The STATIC_ROOT variables are already set so run: 
+	
+	python ordo_electro/manage.py collectstatic
 
 Make sure to add your keys for the various apps in:
 
