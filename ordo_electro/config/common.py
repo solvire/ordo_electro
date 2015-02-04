@@ -44,7 +44,8 @@ class Common(Configuration):
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
         'twython', #twython twitter API app
-        'social_content', #tools for managing social content 
+        'social', #tools for managing social content 
+        'rest_framework', # for the django rest framework 
     )
 
     # Apps specific for this project go here.
@@ -285,4 +286,14 @@ class Common(Configuration):
     
     LOGOUT_URL='account_logout'
     LOGOUT_REDIRECT_URL='/'
-    
+
+    # DRF
+    REST_FRAMEWORK = {
+        # Use Django's standard `django.contrib.auth` permissions,
+        # or allow read-only access for unauthenticated users.
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ],
+        'PAGINATE_BY': 10
+    }
+

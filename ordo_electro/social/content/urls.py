@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url
 
-from social_content import views
+from social.content import views
 
 urlpatterns = patterns('',
     # URL pattern for the SCListView  # noqa

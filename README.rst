@@ -48,6 +48,7 @@ The steps below will get you up and running with a local development environment
 Install memcache if you don't have it
 
 	brew install libmemcached
+	brew install httpie # also useful
 
 I'm using mysql so make sure that you have that running as well. Install it with brew. 
 
@@ -97,6 +98,14 @@ First make sure to create and activate a virtualenv_, then open a terminal at th
 You can now run the ``runserver_plus`` command::
 
     $ python ordo_electro/manage.py runserver_plus
+    
+You may check the app from the browser or by CLI
+
+	http://127.0.0.1:8000/
+	
+	http -a admin:admin http://127.0.0.1:8000/users/
+	
+	
 
 The base app will run but you'll need to carry out a few steps to make the sign-up and login forms work. These are currently detailed in `issue #39`_.
 

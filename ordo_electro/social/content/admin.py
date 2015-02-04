@@ -1,5 +1,5 @@
 from django.contrib import admin
-from social_content.models import Quote, GRAuthor
+from social.content.models import Quote, GRAuthor
 
 # Register your models here.
 

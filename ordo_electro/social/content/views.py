@@ -15,12 +15,13 @@ from twython import Twython
 # Only authenticated users can access views using this.
 from braces.views import LoginRequiredMixin
 
-from social_content.models import Quote
+from social.content.models import Quote
 
 class SocialContentIndexView(LoginRequiredMixin,View):
     template_name = 'social_content/index.html'
     
 class SocialContentQuotesView(LoginRequiredMixin,ListView):
+    template_name = "social_content/quote_list.html"
     permanent = False
     model = Quote
     # These next two lines tell the view to index lookups by username

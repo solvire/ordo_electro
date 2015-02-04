@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -30,7 +31,12 @@ class Migration(migrations.Migration):
             name='Quote',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('quote_text', models.CharField(max_length=140)),
+                ('quote_text_small', models.CharField(max_length=140)),
+                ('quote_text_orig', models.TextField()),
+                ('active', models.BooleanField(default=True)),
+                ('score', models.IntegerField(default=1, validators=[django.core.validators.MaxValueValidator(100), django.core.validators.MinValueValidator(1)])),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('updated', models.DateTimeField(auto_now=True)),
             ],
             options={
             },
