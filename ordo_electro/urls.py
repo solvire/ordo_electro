@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^avatar/', include('avatar.urls')),
 
     # Your stuff: custom urls go here
-    url(r'^social_content/', include('social.content.urls')),
+    url(r'^social/', include('social.urls')),
     
     #DRF stuff 
     url(r'^', include(router.urls)),

@@ -95,6 +95,11 @@ First make sure to create and activate a virtualenv_, then open a terminal at th
 
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
+Set up the migrations:
+
+	python ordo_electro/manage.py makemigrations
+	python ordo_electro/manage.py migrate
+
 You can now run the ``runserver_plus`` command::
 
     $ python ordo_electro/manage.py runserver_plus

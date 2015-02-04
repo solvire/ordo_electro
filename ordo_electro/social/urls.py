@@ -2,13 +2,18 @@
 from django.conf.urls import patterns, url
 
 from social.content import views
+from social.views import AccountViewSet
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'social/accounts', AccountViewSet)
 
 urlpatterns = patterns('',
     # URL pattern for the SCListView  # noqa
     url(
         regex=r'^$',
         view=views.SocialContentIndexView.as_view(),
-        name='social_content'
+        name='social'
     ),
     url(
         regex=r'^quote_scheduler', 
