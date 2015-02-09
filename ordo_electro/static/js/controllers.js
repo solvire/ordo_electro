@@ -15,7 +15,24 @@ function MainCtrl() {
 
 };
 
+/**
+ * SocialAccountsCtrl - Social User Accounts 
+ * used all over the place 
+ */
+function socialAccountsCtrl($scope, $http) {
+	$scope.socialAccounts = [];
+
+	$http({
+		method : 'GET',
+		url : '/social/accounts/'
+	}).success(function(result) {
+		$scope.socialAccounts = result;
+	});
+
+}
+
 
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
+    .controller('socialAccountsCtrl', socialAccountsCtrl)

@@ -5,10 +5,10 @@
 			<li><a href="/">Home</a></li>
 			<li class="active"><strong>Dashboard</strong></li>
 		</ol>
-		<div>
+		<div ng-controller="socialAccountsCtrl">
 			Account: 
-			<select ng-model="twitterAccounts"
-				ng-options="account.username for account in accounts">
+			<select ng-model="socialAccounts"
+				ng-options="account.username for account in socialAccounts">
 			</select>
 		</div>
 	</div>
