@@ -36,3 +36,10 @@ class AccountSerializer(serializers.Serializer):
         instance.updated = datetime.now()
         instance.save()
         return instance
+    
+class AccountTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountType
+        fields = ('name','active')
+        
+        

@@ -1,11 +1,9 @@
 from django.db import models
-from pygments.lexers import get_all_lexers
-from pygments.styles import get_all_styles
 
 class Account(models.Model):
     owner_id = models.IntegerField()
     username = models.CharField(max_length=32)
-    password = models.CharField(max_length=32)
+    password = models.CharField(max_length=32, default='')
     account_type = models.ForeignKey('AccountType')
     active = models.BooleanField(default=True)
     token = models.CharField(max_length=128)

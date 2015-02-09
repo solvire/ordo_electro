@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, include, url
 
 from social.content import views
 from social.views import AccountViewSet
 from rest_framework import routers
 
+import logging
+import json
+
 router = routers.DefaultRouter()
-router.register(r'social/accounts', AccountViewSet)
+router.register(r'accounts', AccountViewSet)
 
 urlpatterns = patterns('',
     # URL pattern for the SCListView  # noqa
-    url(
-        regex=r'^$',
-        view=views.SocialContentIndexView.as_view(),
-        name='social'
-    ),
+#     url(
+#         regex=r'^$',
+#         view=views.SocialContentIndexView.as_view(),
+#         name='social'
+#     ),
     url(
         regex=r'^quote_scheduler', 
         view=views.SocialContentQuoteScedulerView.as_view(), 
@@ -29,7 +32,7 @@ urlpatterns = patterns('',
         regex=r'^tweets', 
         view=views.TweetsView.as_view()
     ),
-
+ 
     # An example view using a Twython method with proper OAuth credentials. Clone
     # this view and url definition to get the rest of your desired pages/functionality.
     url(
@@ -42,4 +45,5 @@ urlpatterns = patterns('',
         view=views.ContentDashbaord.as_view(), 
         name="content_dashboard"
     ),
-)
+    url(r'^', include(router.urls)),
+) 

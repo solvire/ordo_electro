@@ -10,7 +10,7 @@ from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from django.views.generic import View, ListView, TemplateView
 from twython import Twython
-
+import logging
 
 # Only authenticated users can access views using this.
 from braces.views import LoginRequiredMixin
@@ -27,6 +27,9 @@ class SocialContentQuotesView(LoginRequiredMixin,ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = "id"
     slug_url_kwarg = "id"
+    def get_context_data(self, **kwargs):
+        context = super(SocialContentQuotesView, self).get_context_data(**kwargs)
+        return context
     
 class SocialContentQuoteScedulerView(LoginRequiredMixin,View):
     template_name = 'social_content/quote_scheduler.html'

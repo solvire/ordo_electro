@@ -79,7 +79,7 @@ class Common(Configuration):
 
     # DEBUG
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-    DEBUG = values.BooleanValue(False)
+    DEBUG = values.BooleanValue(True)
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
     TEMPLATE_DEBUG = DEBUG
@@ -254,19 +254,57 @@ class Common(Configuration):
         },
         'handlers': {
             'mail_admins': {
-                'level': 'ERROR',
+                'level': 'DEBUG',
                 'filters': ['require_debug_false'],
                 'class': 'django.utils.log.AdminEmailHandler'
-            }
+            },
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '/tmp/python.log',
+                'formatter': 'verbose',
+            },
+        },
+        'formatters': {
+            'verbose': {
+                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                'datefmt' : "%d/%b/%Y %H:%M:%S"
+            },
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
         },
         'loggers': {
-            'django.request': {
-                'handlers': ['mail_admins'],
-                'level': 'ERROR',
+            'django': {
+                'handlers': ['mail_admins','file'],
+                'level': 'DEBUG',
                 'propagate': True,
             },
         }
     }
+#     LOGGING = {
+#         'version': 1,
+#         'disable_existing_loggers': False,
+#         'filters': {
+#             'require_debug_false': {
+#                 '()': 'django.utils.log.RequireDebugFalse'
+#             }
+#         },
+#         'handlers': {
+#             'file': {
+#                 'level': 'DEBUG',
+#                 'class': 'logging.FileHandler',
+#                 'filename': '/tmp/python.log',
+#             },
+#         },
+#         'loggers': {
+#             'django.request': {
+#                 'handlers': ['file'],
+#                 'level': 'DEBUG',
+#                 'propagate': True,
+#             },
+#         },
+#     }
     # END LOGGING CONFIGURATION
 
     @classmethod
