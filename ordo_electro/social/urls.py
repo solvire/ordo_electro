@@ -2,14 +2,22 @@
 from django.conf.urls import patterns, include, url
 
 from social.content import views
-from social.views import AccountViewSet
+from social.views import AccountViewSet, AccountTypeViewSet
 from rest_framework import routers
+from rest_framework_extensions.routers import ExtendedSimpleRouter
 
-import logging
-import json
+# router = routers.DefaultRouter()
+# router.register(r'accounts', AccountViewSet)
 
-router = routers.DefaultRouter()
-router.register(r'accounts', AccountViewSet)
+router = ExtendedSimpleRouter()
+(
+    router.register(r'accounts', AccountViewSet,base_name='account',)
+          .register(r'account_types',
+                    AccountTypeViewSet,
+                    base_name='accounts-type',
+                    parents_query_lookups=['user_groups'])
+
+)
 
 urlpatterns = patterns('',
     # URL pattern for the SCListView  # noqa

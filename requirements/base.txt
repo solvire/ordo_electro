@@ -42,3 +42,4 @@ djangorestframework==3.0.4
 Markdown==2.5.2
 django-filter
 MySQL-python==1.2.5
+drf-extensions

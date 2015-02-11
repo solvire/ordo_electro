@@ -5,9 +5,9 @@
 			<li><a href="/">Home</a></li>
 			<li class="active"><strong>Dashboard</strong></li>
 		</ol>
-		<div ng-controller="socialAccountsCtrl">
+		<div ng-controller="TwitterAccountsCtrl">
 			Account: 
-			<select ng-model="socialAccounts"
+			<select ng-model="activeTwitterAccount"
 				ng-options="account.username for account in socialAccounts">
 			</select>
 		</div>

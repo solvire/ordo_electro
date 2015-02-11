@@ -5,7 +5,7 @@ Created on Feb 4, 2015
 '''
 from django.forms import widgets
 from rest_framework import serializers
-from social.models import Account, AccountType
+from social.models import Account, AccountType, TwitterAccount, TwitterAccountLink
 from datetime import datetime   
 
 
@@ -42,4 +42,15 @@ class AccountTypeSerializer(serializers.ModelSerializer):
         model = AccountType
         fields = ('name','active')
         
+        
+class TwitterAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitterAccount
+
+class TwitterAccountLinkSerializer(serializers.ModelSerializer):
+    subjects = TwitterAccountSerializer(many=True)
+    targets = TwitterAccountSerializer(many=True)
+    class Meta:
+        model = TwitterAccountLink
+#         fields = ('id', 'subject_id', 'target_id')
         

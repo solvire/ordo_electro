@@ -17,11 +17,14 @@ function MainCtrl() {
 
 /**
  * SocialAccountsCtrl - Social User Accounts 
- * used all over the place 
+ * used all over the place probably 
+ * sets the dominant account for a screen 
  */
-function socialAccountsCtrl($scope, $http) {
+function SocialAccountsCtrl($scope, $http) {
+	
 	$scope.socialAccounts = [];
-
+	
+	// activeSocialAccount --- stores the holder 
 	$http({
 		method : 'GET',
 		url : '/social/accounts/'
@@ -31,8 +34,29 @@ function socialAccountsCtrl($scope, $http) {
 
 }
 
+/**
+ * twitter specific stuff 
+ * @param $scope
+ * @param $http
+ */
+function TwitterAccountsCtrl($scope, $http) {
+	$scope.twitterAccounts = [];
+	
+	// activeSocialAccount --- stores the holder 
+	$http({
+		method : 'GET',
+		url : '/social/accounts/'
+	}).success(function(result) {
+		$scope.socialAccounts = result;
+	});
+
+	
+}
+
 
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
-    .controller('socialAccountsCtrl', socialAccountsCtrl)
+    .controller('SocialAccountsCtrl', SocialAccountsCtrl)
+    .controller('TwitterAccountsCtrl', TwitterAccountsCtrl)
+    
