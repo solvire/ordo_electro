@@ -2,8 +2,9 @@
 from django.conf.urls import patterns, include, url
 
 from social.content import views
-from social.views import AccountViewSet, AccountTypeViewSet
+from social.views import AccountViewSet, AccountTypeViewSet, TwitterAccountOverviewView, TwitterAccountViewSet, TwitterAccountRelationshipViewSet
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 
 # router = routers.DefaultRouter()
@@ -15,8 +16,25 @@ router = ExtendedSimpleRouter()
           .register(r'account_types',
                     AccountTypeViewSet,
                     base_name='accounts-type',
-                    parents_query_lookups=['user_groups'])
+                    parents_query_lookups=['account_types'])
+                    
+)
 
+"""
+TODO these need to be moved into a sub directory 
+"""
+(
+    router.register(r'twitter',
+                    TwitterAccountOverviewView,
+                    base_name='social-twitter',)
+          .register(r'accounts',
+                    TwitterAccountViewSet,
+                    base_name='social-twitter-accounts',
+                    parents_query_lookups=['twitter_id'])
+          .register(r'relationships',
+                    TwitterAccountRelationshipViewSet,
+                    base_name='social-twitter-account-relationships',
+                    parents_query_lookups=['relationship__subject', 'account'])
 )
 
 urlpatterns = patterns('',
@@ -55,3 +73,5 @@ urlpatterns = patterns('',
     ),
     url(r'^', include(router.urls)),
 ) 
+
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'html'])

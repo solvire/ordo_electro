@@ -1,6 +1,7 @@
-from social.models import Account, TwitterAccount, TwitterAccountLink, AccountType
-from social.serializers import AccountSerializer, TwitterAccountSerializer, TwitterAccountLinkSerializer, AccountTypeSerializer
+from social.models import Account, TwitterAccount, TwitterAccountRelationship, AccountType
+from social.serializers import AccountSerializer, TwitterAccountSerializer, TwitterAccountRelationshipSerializer, AccountTypeSerializer
 from django.shortcuts import get_object_or_404
+from django.views.generic import View
 from rest_framework import viewsets, generics, permissions
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
@@ -32,8 +33,10 @@ class AccountTypeViewSet(NestedViewSetMixin, ModelViewSet):
 class TwitterAccountViewSet(NestedViewSetMixin, ModelViewSet):
     model = TwitterAccount
 
-class TwitterAccountLinkViewSet(NestedViewSetMixin, ModelViewSet):
-    model = TwitterAccountLink    
+class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
+    model = TwitterAccountRelationship
+    
+
     
        
 class AccountTypeList(generics.ListCreateAPIView):
@@ -51,6 +54,15 @@ class AccountTypeDetail(generics.RetrieveUpdateDestroyAPIView):
         permissions.AllowAny
     ]
     
+    
+"""
+Twitter related social items 
+TODO move these sub
+"""
+class TwitterAccountOverviewView(View):
+    template_name = 'social/twitter.html'
+#     form_class = UploadForm
+    
 class TwitterAccountList(generics.ListCreateAPIView):
     model = TwitterAccount
     serializer_class = TwitterAccountSerializer
@@ -67,17 +79,29 @@ class TwitterAccountDetail(generics.RetrieveUpdateDestroyAPIView):
     ]
     
         
-class TwitterAccountLinkList(generics.ListCreateAPIView):
-    model = TwitterAccountLink
-    serializer_class = TwitterAccountLinkSerializer
+class TwitterAccountRelationshipList(generics.ListCreateAPIView):
+    model = TwitterAccountRelationship
+    serializer_class = TwitterAccountRelationshipSerializer
     permission_classes = [
         permissions.AllowAny
     ]
 
 
-class TwitterAccountLinkDetail(generics.RetrieveUpdateDestroyAPIView):
-    model = TwitterAccountLink
-    serializer_class = TwitterAccountLinkSerializer
+class TwitterAccountRelationshipDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = TwitterAccountRelationship
+    serializer_class = TwitterAccountRelationshipSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    
+    
+class TwitterOverviewList(generics.ListCreateAPIView):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+
+class TwitterOverviewDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [
         permissions.AllowAny
     ]

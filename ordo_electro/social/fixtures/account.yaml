@@ -1,0 +1,16 @@
+- model: social.Account
+  pk: 1
+  fields:
+    owner_id: 1
+    username: solvire
+    password: test123
+    created: 2015-01-01
+    updated: 2015-01-01
+- model: social.Account
+  pk: 2
+  fields:
+    owner_id: 1
+    username: test2
+    password: test123
+    created: 2015-01-01
+    updated: 2015-01-01
