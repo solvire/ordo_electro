@@ -5,7 +5,7 @@
 			<li><a href="/">Home</a></li>
 			<li class="active"><strong>Accounts</strong></li>
 		</ol>
-		<div ng-controller="TwitterAccountsCtrl">
+		<div ng-controller="SocialAccountsCtrl">
 			Account: 
 			<select ng-model="activeTwitterAccount"
 				ng-options="account.username for account in socialAccounts">
@@ -16,7 +16,7 @@
 <div class="wrapper wrapper-content p-xl">
 	<div class="animated fadeInRight">
 		<div class="row">
-			<div class="ibox float-e-margins" ng-controller="TwitterAccountsCtrl">
+			<div class="ibox float-e-margins" ng-controller="SocialAccountsCtrl">
 			
 	            <div class="ibox-title">
 	                <h5>Usable Twitter Accounts</h5>

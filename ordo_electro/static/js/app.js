@@ -11,3 +11,4 @@
     ])
 })();
 
+angular.module('twitterAccountServices'), ['ngRoute', 'twitterAccountServices','twitterAccountFilters', 'twitterAccountServices'])
