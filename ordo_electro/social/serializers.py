@@ -43,6 +43,22 @@ class AccountTypeSerializer(serializers.ModelSerializer):
         
         
 class TwitterAccountSerializer(serializers.ModelSerializer):
+    twitter_id = serializers.IntegerField()
+    name = serializers.CharField()
+    screen_name = serializers.CharField()
+    location = serializers.CharField()    
+    
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing `Account` instance, given the validated data.
+        """
+        instance.active = validated_data.get('active', instance.active)
+        instance.token = validated_data.get('token', instance.token)
+        instance.secret = validated_data.get('secret', instance.secret)
+        instance.updated = datetime.now()
+        instance.save()
+        return instance
+    
     class Meta:
         model = TwitterAccount
 

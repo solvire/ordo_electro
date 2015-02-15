@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from markdown.extensions.headerid import unique
 
 class Account(models.Model):
     owner_id = models.IntegerField()

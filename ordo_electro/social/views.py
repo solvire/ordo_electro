@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from rest_framework import viewsets, generics, permissions
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
@@ -31,7 +30,23 @@ class AccountTypeViewSet(NestedViewSetMixin, ModelViewSet):
     model = Account   
    
 class TwitterAccountViewSet(NestedViewSetMixin, ModelViewSet):
+    serializer_class = TwitterAccountSerializer
     model = TwitterAccount
+    queryset = TwitterAccount.objects.all()
+    
+    
+    def list(self, request):
+        queryset = TwitterAccount.objects.all()
+        serializer = TwitterAccountSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+
+    def retrieve(self, request, pk=None):
+        queryset = TwitterAccount.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = TwitterAccountSerializer(user)
+        return Response(serializer.data)
+
 
 class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
     model = TwitterAccountRelationship
