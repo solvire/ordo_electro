@@ -49,8 +49,18 @@ function TwitterAccountsCtrl($scope, $http) {
 	}).success(function(result) {
 		$scope.socialAccounts = result;
 	});
+}
 
+function TwitterAccountTiles($scope, $http) {
+	$scope.twitterAccount= [];
 	
+	// list of accounts assoicated to this users
+	$http({
+		method : 'GET',
+		url : '/social/accounts/'
+	}).success(function(result) {
+		$scope.socialAccounts = result;
+	});
 }
 
 

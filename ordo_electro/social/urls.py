@@ -24,14 +24,11 @@ router = ExtendedSimpleRouter()
 TODO these need to be moved into a sub directory 
 """
 (
-    router.register(r'twitter',
-                    TwitterAccountOverviewView,
-                    base_name='social-twitter',)
-          .register(r'accounts',
+    router.register(r'twitter/accounts',
                     TwitterAccountViewSet,
                     base_name='social-twitter-accounts',
-                    parents_query_lookups=['twitter_id'])
-          .register(r'relationships',
+                    )
+          .register(r'twitter/relationships',
                     TwitterAccountRelationshipViewSet,
                     base_name='social-twitter-account-relationships',
                     parents_query_lookups=['relationship__subject', 'account'])
@@ -44,6 +41,9 @@ urlpatterns = patterns('',
 #         view=views.SocialContentIndexView.as_view(),
 #         name='social'
 #     ),
+    url(r'twitter',
+        view=TwitterAccountOverviewView.as_view(),
+        name='social-twitter'),
     url(
         regex=r'^quote_scheduler', 
         view=views.SocialContentQuoteScedulerView.as_view(), 

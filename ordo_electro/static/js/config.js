@@ -47,6 +47,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             templateUrl: "/static/views/twitter/follower_matrix.html",
             data: { pageTitle: 'Twitter Follower Matrix' },
         })
+        .state('twitter.accounts', {
+            url: "/accounts",
+            templateUrl: "/static/views/twitter/accounts.html",
+            data: { pageTitle: 'Twitter Accounts' },
+        })
 }
 angular
     .module('inspinia')

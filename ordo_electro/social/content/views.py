@@ -10,7 +10,6 @@ from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from django.views.generic import View, ListView, TemplateView
 from twython import Twython
-import logging
 
 # Only authenticated users can access views using this.
 from braces.views import LoginRequiredMixin

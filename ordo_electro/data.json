@@ -1,0 +1,97 @@
+{
+    "id": 2952131241,
+    "id_str": "2952131241",
+    "name": "Ordo Exercitus",
+    "screen_name": "OrdoExercitus",
+    "location": "Sherman Oaks, CA",
+    "profile_location": null,
+    "description": "#Catholic #Military #Fraternity - We Warriors under the Grace of the highest of Powers & Protectors of the Traditions of #Truth. Join::OrdoExercitus@gmail.com",
+    "url": "http://t.co/vR2UpkmLdb",
+    "entities": {
+        "url": {
+            "urls": [
+                {
+                    "url": "http://t.co/vR2UpkmLdb",
+                    "expanded_url": "http://ordo.club",
+                    "display_url": "ordo.club",
+                    "indices": [
+                        0,
+                        22
+                    ]
+                }
+            ]
+        },
+        "description": {
+            "urls": []
+        }
+    },
+    "protected": false,
+    "followers_count": 1416,
+    "friends_count": 1434,
+    "listed_count": 7,
+    "created_at": "Wed Dec 31 00:12:27 +0000 2014",
+    "favourites_count": 44,
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 667,
+    "lang": "en",
+    "status": {
+        "created_at": "Sat Feb 14 23:15:16 +0000 2015",
+        "id": 566737468041756700,
+        "id_str": "566737468041756672",
+        "text": "Know your Terror Tribe. \n#CopenhagenShooting",
+        "source": "src",
+        "truncated": false,
+        "in_reply_to_status_id": null,
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "in_reply_to_screen_name": null,
+        "geo": null,
+        "coordinates": null,
+        "place": null,
+        "contributors": null,
+        "retweet_count": 0,
+        "favorite_count": 0,
+        "entities": {
+            "hashtags": [
+                {
+                    "text": "CopenhagenShooting",
+                    "indices": [
+                        25,
+                        44
+                    ]
+                }
+            ],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": []
+        },
+        "favorited": false,
+        "retweeted": false,
+        "lang": "en"
+    },
+    "contributors_enabled": false,
+    "is_translator": false,
+    "is_translation_enabled": false,
+    "profile_background_color": "ABB8C2",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/550441100792430592/zHQKK-rp.jpeg",
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/550441100792430592/zHQKK-rp.jpeg",
+    "profile_background_tile": false,
+    "profile_image_url": "http://pbs.twimg.com/profile_images/550082346989264896/U8dQCYZE_normal.jpeg",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/550082346989264896/U8dQCYZE_normal.jpeg",
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/2952131241/1420071098",
+    "profile_link_color": "8B0000",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": false,
+    "follow_request_sent": false,
+    "notifications": false
+}
+

@@ -1,16 +1,21 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from markdown.extensions.headerid import unique
 
 class Account(models.Model):
     owner_id = models.IntegerField()
     username = models.CharField(max_length=32)
     password = models.CharField(max_length=32, default='')
+    account_id = models.BigIntegerField(default=0)
     account_type = models.ForeignKey('AccountType')
     active = models.BooleanField(default=True)
     token = models.CharField(max_length=128)
     secret = models.CharField(max_length=128)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.username
     
     class Meta:
         ordering = ('created',)
@@ -41,26 +46,26 @@ class TwitterAccount(models.Model):
     then when we take input from the UI that calls more data to show up on a particular 
     id that we will use that to populate this.  
     """
-    twitter_id = models.BigIntegerField()
+    twitter_id = models.BigIntegerField(unique=True)
     name = models.CharField(max_length=20)
     screen_name = models.CharField(max_length=25)
-    location = models.CharField(max_length=25)
-    profile_location = models.CharField(max_length=45)
-    url = models.CharField(max_length=100)
-    description = models.CharField(max_length=160)
+    location = models.CharField(max_length=25, null=True)
+    profile_location = models.CharField(max_length=45, null=True)
+    url = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=160, null=True)
     protected = models.BooleanField(default=False)
-    followers_count = models.IntegerField()
-    friends_count = models.IntegerField()
-    listed_count = models.IntegerField()
-    created_at = models.DateTimeField()
-    favourites_count = models.IntegerField()
-    utc_offset = models.IntegerField()
-    time_zone = models.CharField(max_length=15)
+    followers_count = models.IntegerField(default=0)
+    friends_count = models.IntegerField(default=0)
+    listed_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(null=True)
+    favourites_count = models.IntegerField(default=0)
+    utc_offset = models.IntegerField(default=0, null=True)
+    time_zone = models.CharField(max_length=15, null=True)
     geo_enabled = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
-    statuses_count = models.IntegerField()
-    lang = models.CharField(max_length=5)
-    profile_image_url_https = models.CharField(max_length=15)
+    statuses_count = models.IntegerField(default=0)
+    lang = models.CharField(max_length=5,null=True)
+    profile_image_url_https = models.CharField(max_length=150,null=True)
     following = models.BooleanField(default=False)
     follow_request_sent = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

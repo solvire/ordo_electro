@@ -1,0 +1,43 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="col-lg-8">
+		<h2>Twitter Accounts</h2>
+		<ol class="breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li class="active"><strong>Accounts</strong></li>
+		</ol>
+		<div ng-controller="TwitterAccountsCtrl">
+			Account: 
+			<select ng-model="activeTwitterAccount"
+				ng-options="account.username for account in socialAccounts">
+			</select>
+		</div>
+	</div>
+</div>
+<div class="wrapper wrapper-content p-xl">
+	<div class="animated fadeInRight">
+		<div class="row">
+			<div class="ibox float-e-margins" ng-controller="TwitterAccountsCtrl">
+			
+	            <div class="ibox-title">
+	                <h5>Usable Twitter Accounts</h5>
+	            </div>
+	            <div class="ibox-content" ng-repeat="account in socialAccounts">
+	                <div class="row">
+	                    <div class="col-xs-4">
+	                        <h3>{{ account.username }}</h3>
+	                        Active: {{ account.active }} 
+	                        Friends: 
+	                    </div>
+	
+	                    <div class="col-xs-4">
+	                        <small class="stats-label">Last week</small>
+	                        <h4>432.021</h4>
+	                    </div>
+	                </div>
+	            </div>
+			
+			
+			</div>
+		</div>
+	</div>
+</div>
