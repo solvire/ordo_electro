@@ -20,9 +20,6 @@ class Command(BaseCommand):
         for account in Account.objects.filter(account_type=1):
             
             if (account.secret == '' or account.token == ''):
-                # maybe we should get the token now. 
-                twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET)
-                
                 continue
             if (account.username == '' ): 
                 raise Exception("Username is not set")

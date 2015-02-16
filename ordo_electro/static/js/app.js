@@ -8,7 +8,7 @@
         'ui.router',                    // Routing
         'oc.lazyLoad',                  // ocLazyLoad
         'ui.bootstrap',                 // Ui Bootstrap
+        'ngResource',
     ])
 })();
 
-angular.module('twitterAccountServices'), ['ngRoute', 'twitterAccountServices','twitterAccountFilters', 'twitterAccountServices'])

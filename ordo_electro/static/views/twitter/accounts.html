@@ -10,22 +10,23 @@
 			<select ng-model="activeTwitterAccount"
 				ng-options="account.username for account in socialAccounts">
 			</select>
+			<a href="/social/account/get_keys" ><span class="label label-warning pull-right">Get Keys</span></a>
 		</div>
 	</div>
 </div>
 <div class="wrapper wrapper-content p-xl">
 	<div class="animated fadeInRight">
 		<div class="row">
-			<div class="ibox float-e-margins" ng-controller="SocialAccountsCtrl">
+			<div class="ibox float-e-margins" ng-controller="TwitterAccountsCtrl">
 			
 	            <div class="ibox-title">
 	                <h5>Usable Twitter Accounts</h5>
 	            </div>
-	            <div class="ibox-content" ng-repeat="account in socialAccounts">
+	            <div class="ibox-content" ng-repeat="account in twitterAccounts">
 	                <div class="row">
 	                    <div class="col-xs-4">
-	                        <h3>{{ account.username }}</h3>
-	                        Active: {{ account.active }} 
+	                        <h3>Username: {{ account.username }}</h3>
+	                        Active: {{ account.active }}  
 	                        Friends: 
 	                    </div>
 	
@@ -35,8 +36,6 @@
 	                    </div>
 	                </div>
 	            </div>
-			
-			
 			</div>
 		</div>
 	</div>

@@ -35,70 +35,74 @@ function SocialAccountsCtrl($scope, $http) {
 }
 
 /**
- * twitter specific stuff 
- * @param $scope
- * @param $http
+ * Twitter account stuff 
+ * sets the dominant account for a screen 
  */
-function SocialAccountsCtrl($scope, $http) {
+function TwitterAccountsCtrl($scope, $http) {
+	
 	$scope.twitterAccounts = [];
 	
 	// activeSocialAccount --- stores the holder 
 	$http({
 		method : 'GET',
-		url : '/social/accounts/'
-	}).success(function(result) {
-		$scope.socialAccounts = result;
-	});
-}
-
-function TwitterAccountCtrl($scope, $http) {
-	
-	// list of accounts assoicated to this users
-	$http({
-		method : 'GET',
 		url : '/social/twitter/accounts/'
 	}).success(function(result) {
-		$scope.socialAccount = result;
+		$scope.twitterAccounts = result;
 	});
+
 }
 
+// For now I'll stuff this in here until I can get best practices
+// Define CreditCard class
 
-//For now I'll stuff this in here until I can get best practices 
-//Define CreditCard class
-var TwitterAccount = $resource('/social/twitter/accounts/:twitter_id', {
-	twitter_id : '@id'
-}, {
-	update : {
-		method : 'PUT'
-	}
-});
+//var TwitterAccount = $resource('/social/twitter/accounts/:id', {id:'@id'});
 
 
-// We can retrieve a collection from the server
-var cards = TwitterAccount.query(function() {
-	// GET: /user/123/card
-	// server returns: [ {id:456, number:'1234', name:'Smith'} ];
+//var TwitterAccount = function($resource) {
+//	$resource('/social/twitter/accounts/:id', {
+//		twitter_id : '@id'
+//	}, {
+//		update : {
+//			method : 'PUT'
+//		}
+//	})
+//};
 
-	var card = cards[0];
-	// each item is an instance of CreditCard
-	expect(card instanceof CreditCard).toEqual(true);
-	card.name = "J. Smith";
-	// non GET methods are mapped onto the instances
-	card.$save();
-	// POST: /user/123/card/456 {id:456, number:'1234', name:'J. Smith'}
-	// server returns: {id:456, number:'1234', name: 'J. Smith'};
+function TwitterAccountsCtrlX($scope, TwitterAccount) {
 
-	// our custom method is mapped as well.
-	card.$charge({
-		amount : 9.99
-	});
-	// POST: /user/123/card/456?amount=9.99&charge=true {id:456, number:'1234', name:'J. Smith'}
-});
+	$scope.twitterAccount = TwitterAccount.get({id: $scope.id }); // get() returns a single entry
+
+	$scope.twitterAccounts = TwitterAccount.query(); // query() returns all the entries
+//
+//	$scope.twitterAccount = new twitterAccount(); // You can instantiate resource class
+//
+//	$scope.twitterAccount.data = 'TBD';
+//
+//	TwitterAccount.save($scope.entry, function() {
+//		// data saved. do something here.
+//	}); // saves an entry. Assuming $scope.entry is the Entry object
+
+	// // list of accounts assoicated to this users
+	// $http({
+	// method : 'GET',
+	// url : '/social/twitter/accounts/'
+	// }).success(function(result) {
+	// $scope.socialAccount = result;
+	// });
+}
+var TwitterAccount = function ($resource) {
+	return $resource('/social/twitter/accounts/:id',
+			{id:'@id'},
+    		{'query': { method: 'GET', isArray:true }}
+    		);
+}
 
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('SocialAccountsCtrl', SocialAccountsCtrl)
     .controller('TwitterAccountsCtrl', TwitterAccountsCtrl)
-//    .factory('TwitterAccount',TwitterAccount)
-    
+    .factory('TwitterAccount',TwitterAccount)
+   
+//ta = new TwitterAccountsCtrl();
+//console.log(ta.query());
