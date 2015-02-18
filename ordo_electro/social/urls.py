@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 
 from social.content import views
-from social.views import AccountViewSet, AccountTypeViewSet, TwitterAccountOverviewView, TwitterAccountViewSet, TwitterAccountRelationshipViewSet
+from social.views import AccountViewSet, AccountTypeViewSet, TwitterAccountOverviewView, TwitterAccountViewSet, TwitterAccountRelationshipViewSet, oauth_redirect, oauth_verify
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 
@@ -59,6 +59,8 @@ urlpatterns = patterns('',
         view=views.ContentDashbaord.as_view(), 
         name="content_dashboard"
     ),
+    url(r'^twitter_oauth_redirect/(?P<social_account_id>\d+)',oauth_redirect),
+    url(r'^twitter_oauth_verify',oauth_verify),
     url(r'', include(router.urls)),
 ) 
 
