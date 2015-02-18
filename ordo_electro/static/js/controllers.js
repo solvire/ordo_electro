@@ -23,6 +23,7 @@ function MainCtrl() {
 function SocialAccountsCtrl($scope, $http) {
 	
 	$scope.socialAccounts = [];
+	$scope.activeAccount = null;
 	
 	// activeSocialAccount --- stores the holder 
 	$http({
@@ -31,7 +32,7 @@ function SocialAccountsCtrl($scope, $http) {
 	}).success(function(result) {
 		$scope.socialAccounts = result;
 	});
-
+	
 }
 
 /**

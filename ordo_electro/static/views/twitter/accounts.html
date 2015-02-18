@@ -10,7 +10,9 @@
 			<select ng-model="activeTwitterAccount"
 				ng-options="account.username for account in socialAccounts">
 			</select>
-			<a href="/social/twitter_oauth_redirect/2" ><span class="label label-warning">New Keys (social login)</span></a>
+			<div>
+				<a href="/social/twitter_oauth_redirect/{{ id }}" ><span class="label label-warning">New Keys (social login){{ $scope.activeAccount.id }}</span></a>
+			</div>
 		</div>
 	</div>
 </div>
@@ -22,17 +24,29 @@
 	            <div class="ibox-title">
 	                <h5>Usable Twitter Accounts</h5>
 	            </div>
-	            <div class="ibox-content" ng-repeat="account in twitterAccounts">
+	            <div class="ibox-content" ng-repeat="ta in twitterAccounts">
+	            	<div class="row" >
+	            		<h3>Name: {{ ta.name }} </h3><a href="http://twitter.com/{{ ta.screen_name }}" >@{{ ta.screen_name }}</a> 
+	            	</div>
 	                <div class="row">
-	                    <div class="col-xs-4">
-	                        <h3>Username: {{ account.username }}</h3>
-	                        Active: {{ account.active }}  
-	                        Friends: 
+	                	<div class="col-xs-1">
+	                		<img src="{{ ta.profile_image_url_https }}" />
+	                	</div>
+	                    <div class="col-xs-1">
+	                        <small class="stats-label">Following</small>
+	                        <h4>{{ ta.friends_count }}</h4>
 	                    </div>
-	
-	                    <div class="col-xs-4">
-	                        <small class="stats-label">Last week</small>
-	                        <h4>432.021</h4>
+	                    <div class="col-xs-1">
+	                        <small class="stats-label">Followers</small>
+	                        <h4>{{ ta.followers_count }}</h4>
+	                    </div>
+	                    <div class="col-xs-1">
+	                        <small class="stats-label">Tweets</small>
+	                        <h4>{{ ta.statuses_count }}</h4>
+	                    </div>
+	                    <div class="col-xs-1">
+	                        <small class="stats-label">Favorites</small>
+	                        <h4>{{ ta.favourites_count }}</h4>
 	                    </div>
 	                </div>
 	            </div>
