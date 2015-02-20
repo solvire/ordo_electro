@@ -9,7 +9,9 @@ from datetime import datetime
 
 
 class AccountSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     owner_id = serializers.IntegerField()
+    account_id = serializers.IntegerField()
     username = serializers.CharField()
     password = serializers.CharField()
     account_type = serializers.StringRelatedField()

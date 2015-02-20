@@ -33,11 +33,11 @@ function SocialAccountsCtrl($scope, $http) {
 		$scope.socialAccounts = result;
 	});
 	
+
 }
 
 /**
- * Twitter account stuff 
- * sets the dominant account for a screen 
+ * Twitter account stuff sets the dominant account for a screen
  */
 function TwitterAccountsCtrl($scope, $http) {
 	
@@ -52,6 +52,24 @@ function TwitterAccountsCtrl($scope, $http) {
 	});
 
 }
+
+/**
+ * Twitter follower stuff needs a dominant account
+ */
+function TwitterAccountFollowersCtrl($scope, $http) {
+	
+	$scope.twitterAccountFollowers = [];
+	
+	// activeSocialAccount --- stores the holder 
+	$http({
+		method : 'GET',
+		url : '/social/twitter/accounts/'
+	}).success(function(result) {
+		$scope.twitterAccounts = result;
+	});
+
+}
+
 
 // For now I'll stuff this in here until I can get best practices
 // Define CreditCard class

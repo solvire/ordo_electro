@@ -1,1 +1,32 @@
-Testing
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="col-lg-8">
+		<h2>Twitter Accounts</h2>
+		<ol class="breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li class="active"><strong>Accounts</strong></li>
+		</ol>
+		<div ng-controller="SocialAccountsCtrl">
+			Account: 
+			<select ng-model="activeTwitterAccount"
+				ng-options="account.username for account in socialAccounts"
+				>
+			</select>
+			<div ng-model="activeTwitterAccount">
+				<a ng-href="/social/twitter_oauth_redirect/{{ activeTwitterAccount.id }}"><span class="label label-warning">New Keys (social login)</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="wrapper wrapper-content p-xl">
+	<div class="animated fadeInRight">
+		<div class="row">
+			<div class="ibox float-e-margins" ng-controller="activeTwitterAccount">
+			
+	            <div class="ibox-title">
+	                <h5>Usable Twitter Accounts</h5>
+	            </div>
+			
+			</div>
+		</div>
+	</div>
+</div>

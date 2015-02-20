@@ -29,8 +29,9 @@ class TwitterAccountRelationship(models.Model):
     """
     subject = models.ForeignKey('TwitterAccount', related_name = 'subject', verbose_name=_('subject'))
     target = models.ForeignKey('TwitterAccount', related_name='target', verbose_name=_('target'))
-    active = models.BooleanField(default=True)
-    created = models.DateField(auto_now=True)
+    active = models.BooleanField(default=True)  # we should not dump data 
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     
     class Meta:
         unique_together = (('subject', 'target'),)
@@ -69,3 +70,16 @@ class TwitterAccount(models.Model):
     follow_request_sent = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    
+
+class TwitterApiRequest(models.Model):
+    """
+    For keeping track of the twitter API requests 
+    primarily used for throttling 
+    """
+    twitter_id = models.BigIntegerField(unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    request_name = models.CharField(max_length=45,db_index=True,null=False)
+    request_status = models.IntegerField()
+
+    

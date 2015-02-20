@@ -8,10 +8,11 @@
 		<div ng-controller="SocialAccountsCtrl">
 			Account: 
 			<select ng-model="activeTwitterAccount"
-				ng-options="account.username for account in socialAccounts">
+				ng-options="account.username for account in socialAccounts"
+				>
 			</select>
-			<div>
-				<a href="/social/twitter_oauth_redirect/{{ id }}" ><span class="label label-warning">New Keys (social login){{ $scope.activeAccount.id }}</span></a>
+			<div ng-model="activeTwitterAccount">
+				<a ng-href="/social/twitter_oauth_redirect/{{ activeTwitterAccount.id }}"><span class="label label-warning">New Keys (social login)</span></a>
 			</div>
 		</div>
 	</div>
@@ -30,7 +31,7 @@
 	            	</div>
 	                <div class="row">
 	                	<div class="col-xs-1">
-	                		<img src="{{ ta.profile_image_url_https }}" />
+	                		<img ng-src="{{ ta.profile_image_url_https }}" />
 	                	</div>
 	                    <div class="col-xs-1">
 	                        <small class="stats-label">Following</small>

@@ -42,7 +42,7 @@ def oauth_verify(request):
     # get the social account set up that we are going to tie this thing to 
     social_account = Account.objects.get(id=request.session['social_account_id'])
     
-    
+    # let's update some values for the main social account that we have     
     social_account.token = OAUTH_TOKEN
     social_account.secret = OAUTH_TOKEN_SECRET
     social_account.save()
@@ -67,9 +67,11 @@ def oauth_verify(request):
     twitter_account.save()
     
     # lets make sure the master social account associated 
-    # with this object is created and in place 
-    
-    print(twitter_account)
+    # with this object is created and in place
+    # i know this is redundant saves but if we failed after trying twython 
+    # i didn't want to lose the secret and teh keys up there. 
+    social_account.account_id = profile['id']
+    social_account.save() 
     
     return redirect('/#/twitter/accounts')
 
