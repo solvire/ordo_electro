@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-class Account(models.Model):
+class SocialAccount(models.Model):
     owner_id = models.IntegerField()
     username = models.CharField(max_length=32)
     password = models.CharField(max_length=32, default='')
     account_id = models.BigIntegerField(default=0)
-    account_type = models.ForeignKey('AccountType')
+    account_type = models.ForeignKey('SocialAccountType')
     active = models.BooleanField(default=True)
     token = models.CharField(max_length=128)
     secret = models.CharField(max_length=128)
@@ -19,7 +19,7 @@ class Account(models.Model):
     class Meta:
         ordering = ('created',)
         
-class AccountType(models.Model):
+class SocialAccountType(models.Model):
     name = models.CharField(max_length=25)
     active = models.BooleanField(default=True)
     
@@ -29,9 +29,10 @@ class TwitterAccountRelationship(models.Model):
     """
     subject = models.ForeignKey('TwitterAccount', related_name = 'subject', verbose_name=_('subject'))
     target = models.ForeignKey('TwitterAccount', related_name='target', verbose_name=_('target'))
-    active = models.BooleanField(default=True)  # we should not dump data 
-    created = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True) 
+    created = models.DateTimeField(auto_now_add=True) # 
     updated = models.DateTimeField(auto_now=True)
+    
     
     class Meta:
         unique_together = (('subject', 'target'),)
@@ -82,4 +83,15 @@ class TwitterApiRequest(models.Model):
     request_name = models.CharField(max_length=45,db_index=True,null=False)
     request_status = models.IntegerField()
 
+
+class LimitStatus(models.Model):
+    """
+    For tracking rate limits
+    This will be created as a notice for those times when we encounter the rate limit error 
+    """
+    account_id = models.BigIntegerField(unique=True) # the social account 
+    created = models.DateTimeField(auto_now_add=True) 
+    request_name = models.CharField(max_length=15)
+    active = models.BooleanField(default=True) # set to false after resolved... i can use this later
+    
     

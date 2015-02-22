@@ -1,5 +1,5 @@
-from social.models import Account, TwitterAccount, TwitterAccountRelationship, AccountType
-from social.serializers import AccountSerializer, TwitterAccountSerializer, TwitterAccountRelationshipSerializer, AccountTypeSerializer
+from social.models import SocialAccount, TwitterAccount, TwitterAccountRelationship, SocialAccountType
+from social.serializers import SocialAccountSerializer, TwitterAccountSerializer, TwitterAccountRelationshipSerializer, SocialAccountTypeSerializer
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import View
 from django.conf import settings
@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from social.twitter.mapper import Mapper
+from social.twitter.relationship import RelationshipUtils
 
 from twython import Twython, TwythonError
 
@@ -40,7 +41,7 @@ def oauth_verify(request):
     
     
     # get the social account set up that we are going to tie this thing to 
-    social_account = Account.objects.get(id=request.session['social_account_id'])
+    social_account = SocialAccount.objects.get(id=request.session['social_account_id'])
     
     # let's update some values for the main social account that we have     
     social_account.token = OAUTH_TOKEN
@@ -75,27 +76,27 @@ def oauth_verify(request):
     
     return redirect('/#/twitter/accounts')
 
-class AccountViewSet(viewsets.ModelViewSet):
+class SocialAccountViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    queryset = SocialAccount.objects.all()
+    serializer_class = SocialAccountSerializer
     
     def list(self, request):
-        queryset = Account.objects.all()
-        serializer = AccountSerializer(queryset, many=True)
+        queryset = SocialAccount.objects.all()
+        serializer = SocialAccountSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = Account.objects.all()
+        queryset = SocialAccount.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        serializer = AccountSerializer(user)
+        serializer = SocialAccountSerializer(user)
         return Response(serializer.data)
    
 
-class AccountTypeViewSet(NestedViewSetMixin, ModelViewSet):
-    model = Account   
+class SocialAccountTypeViewSet(NestedViewSetMixin, ModelViewSet):
+    model = SocialAccount   
    
 class TwitterAccountViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = TwitterAccountSerializer
@@ -104,6 +105,9 @@ class TwitterAccountViewSet(NestedViewSetMixin, ModelViewSet):
     
     
     def list(self, request):
+        
+        # get the list of new users loaded in if necessary 
+        
         queryset = TwitterAccount.objects.all()
         serializer = TwitterAccountSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -117,22 +121,45 @@ class TwitterAccountViewSet(NestedViewSetMixin, ModelViewSet):
 
 
 class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
+    serializer_class = TwitterAccountRelationshipSerializer
     model = TwitterAccountRelationship
+    queryset = TwitterAccountRelationship.objects.all()
+    
+    
+    def list(self, request,parent_lookup_account):
+        """
+        this is probably a good place to check to see if the account needs to be refreshed 
+        since we already have the parent account passed in we can check the last updated time for 
+        friends and followers call update to it
+        if 
+        """
+        social_account = SocialAccount.objects.get(id=parent_lookup_account)
+        RelationshipUtils.save_followers(RelationshipUtils.fetch_followers(self, social_account))
+        queryset = TwitterAccountRelationship.objects.all()
+        serializer = TwitterAccountSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+
+    def retrieve(self, request, pk=None):
+        queryset = TwitterAccountRelationship.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = TwitterAccountSerializer(user)
+        return Response(serializer.data)
     
 
     
        
-class AccountTypeList(generics.ListCreateAPIView):
-    model = AccountType
-    serializer_class = AccountTypeSerializer
+class SocialAccountTypeList(generics.ListCreateAPIView):
+    model = SocialAccountType
+    serializer_class = SocialAccountTypeSerializer
     permission_classes = [
         permissions.AllowAny
     ]
 
 
-class AccountTypeDetail(generics.RetrieveUpdateDestroyAPIView):
-    model = AccountType
-    serializer_class = AccountTypeSerializer
+class SocialAccountTypeDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = SocialAccountType
+    serializer_class = SocialAccountTypeSerializer
     permission_classes = [
         permissions.AllowAny
     ]

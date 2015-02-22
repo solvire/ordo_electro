@@ -4,11 +4,11 @@ Created on Feb 4, 2015
 @author: solvire
 '''
 from rest_framework import serializers
-from social.models import Account, AccountType, TwitterAccount, TwitterAccountRelationship
+from social.models import SocialAccount, SocialAccountType, TwitterAccount, TwitterAccountRelationship
 from datetime import datetime   
 
 
-class AccountSerializer(serializers.Serializer):
+class SocialAccountSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     owner_id = serializers.IntegerField()
     account_id = serializers.IntegerField()
@@ -25,7 +25,7 @@ class AccountSerializer(serializers.Serializer):
         """
         Create and return a new `Account` instance, given the validated data.
         """
-        return Account.objects.create(**validated_data)
+        return SocialAccount.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """
@@ -38,9 +38,9 @@ class AccountSerializer(serializers.Serializer):
         instance.save()
         return instance
     
-class AccountTypeSerializer(serializers.ModelSerializer):
+class SocialAccountTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AccountType
+        model = SocialAccountType
         fields = ('name','active')
         
         
@@ -69,5 +69,4 @@ class TwitterAccountRelationshipSerializer(serializers.ModelSerializer):
     targets = TwitterAccountSerializer(many=True)
     class Meta:
         model = TwitterAccountRelationship
-        fields = ('id', 'subject_id', 'target_id')
         

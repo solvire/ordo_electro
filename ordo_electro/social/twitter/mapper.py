@@ -17,7 +17,6 @@ class Mapper:
                 continue
             if key in skips: continue
             if key == 'created_at': 
-#                 twitter_account.created_at = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(value,'%a %b %d %H:%M:%S +0000 %Y'))
                 twitter_account.created_at = parser.parse(value)
                 continue
             

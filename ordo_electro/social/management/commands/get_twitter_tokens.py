@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 import pprint
-from social.models import Account, AccountType, TwitterAccount
+from social.models import SocialAccount, SocialAccountType, TwitterAccount
 from twython import Twython, TwythonError
 from social.twitter.mapper import Mapper
 import json
@@ -17,7 +17,7 @@ class Command(BaseCommand):
         Loop through each account and see if that account is set up and is valid. 
         if it comes back false mark the account as inactive and put a not on it.
         """
-        for account in Account.objects.filter(account_type=1):
+        for account in SocialAccount.objects.filter(account_type=1):
             
             if (account.secret == '' or account.token == ''):
                 continue

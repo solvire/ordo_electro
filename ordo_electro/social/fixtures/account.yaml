@@ -1,9 +1,9 @@
-- model: social.AccountType
+- model: social.SocialAccountType
   pk: 1
   fields:
       name: twitter
       active: 1
-- model: social.Account
+- model: social.SocialAccount
   pk: 1
   fields:
     owner_id: 1
@@ -14,12 +14,21 @@
     token: 2952131241-lCS04WoB2tsXSi8Ts2JetgDCNU9sJrmRBwUiH9S
     secret: YIn9E20IHrKaAe1CqoeKpAORDn12xfNAwzUrYhWpZYYYj
     account_type: 1
-- model: social.Account
+- model: social.SocialAccount
   pk: 2
   fields:
     owner_id: 1
     username: JimmyKPost
     password: test123
     created: 2015-01-01T00:00:00
+    updated: 2015-01-01T00:00:00
+    account_type: 1
+- model: social.SocialAccount
+  pk: 3
+  fields:
+    owner_id: 1
+    username: Scott_Tactical
+    password: test234
+    created: 2015-02-23T01:00:00
     updated: 2015-01-01T00:00:00
     account_type: 1
