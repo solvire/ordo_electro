@@ -50,7 +50,7 @@ class TwitterAccount(models.Model):
     twitter_id = models.BigIntegerField(unique=True)
     name = models.CharField(max_length=20)
     screen_name = models.CharField(max_length=25)
-    location = models.CharField(max_length=25, null=True)
+    location = models.CharField(max_length=45, null=True)
     profile_location = models.CharField(max_length=45, null=True)
     url = models.CharField(max_length=100, null=True)
     description = models.CharField(max_length=160, null=True)
@@ -61,7 +61,7 @@ class TwitterAccount(models.Model):
     created_at = models.DateTimeField(null=True)
     favourites_count = models.IntegerField(default=0)
     utc_offset = models.IntegerField(default=0, null=True)
-    time_zone = models.CharField(max_length=15, null=True)
+    time_zone = models.CharField(max_length=35, null=True)
     geo_enabled = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     statuses_count = models.IntegerField(default=0)
@@ -71,6 +71,7 @@ class TwitterAccount(models.Model):
     follow_request_sent = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+#     followers = models.ManyToOneRel('TwitterAccountRelationship', related_name='subject_id')
     
 
 class TwitterApiRequest(models.Model):

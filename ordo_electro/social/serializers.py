@@ -48,7 +48,12 @@ class TwitterAccountSerializer(serializers.ModelSerializer):
     twitter_id = serializers.IntegerField()
     name = serializers.CharField()
     screen_name = serializers.CharField()
-    location = serializers.CharField()    
+    location = serializers.CharField()
+#     followers = serializers.HyperlinkedRelatedField(
+#             many=True,
+#             read_only=True,
+#             view_name='track-detail'
+#         )
     
     def update(self, instance, validated_data):
         """
@@ -63,10 +68,16 @@ class TwitterAccountSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = TwitterAccount
-
-class TwitterAccountRelationshipSerializer(serializers.ModelSerializer):
-    subjects = TwitterAccountSerializer(many=True)
-    targets = TwitterAccountSerializer(many=True)
+        
+class TwitterAccountFollowerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitterAccountRelationship
+    
+        
+class TwitterAccountRelationshipSerializer(serializers.ModelSerializer):
+    subject = TwitterAccountSerializer(many=True)
+    target = TwitterAccountSerializer(many=True)
+    class Meta:
+        model = TwitterAccountRelationship
+        
         

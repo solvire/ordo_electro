@@ -1,5 +1,5 @@
 from social.models import SocialAccount, TwitterAccount, TwitterAccountRelationship, SocialAccountType
-from social.serializers import SocialAccountSerializer, TwitterAccountSerializer, TwitterAccountRelationshipSerializer, SocialAccountTypeSerializer
+from social.serializers import SocialAccountSerializer, TwitterAccountSerializer, TwitterAccountRelationshipSerializer, SocialAccountTypeSerializer, TwitterAccountFollowerSerializer
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import View
 from django.conf import settings
@@ -13,6 +13,7 @@ from social.twitter.mapper import Mapper
 from social.twitter.relationship import RelationshipUtils
 
 from twython import Twython, TwythonError
+import json
 
 
 def oauth_redirect(request,social_account_id):
@@ -134,9 +135,17 @@ class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
         if 
         """
         social_account = SocialAccount.objects.get(id=parent_lookup_account)
-        RelationshipUtils.save_followers(RelationshipUtils.fetch_followers(self, social_account))
-        queryset = TwitterAccountRelationship.objects.all()
-        serializer = TwitterAccountSerializer(queryset, many=True)
+        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        
+        # get the followers and save all their profiles for later use 
+#         followers = RelationshipUtils.fetch_followers(social_account, social_account.username)
+        followers = json.load(open('/Users/moz/Desktop/data.json'))
+        RelationshipUtils.save_followers(followers, subject)
+        
+        
+        queryset = TwitterAccountRelationship.objects.filter(subject_id=subject.id)
+        serializer = TwitterAccountRelationshipSerializer(queryset, many=True)
+        
         return Response(serializer.data)
     
 
@@ -146,8 +155,31 @@ class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
         serializer = TwitterAccountSerializer(user)
         return Response(serializer.data)
     
-
+class TwitterAccountFollowerViewSet(NestedViewSetMixin, ModelViewSet):
+    serializer_class = TwitterAccountFollowerSerializer
+    model = TwitterAccountRelationship
     
+    
+    def list(self, request,parent_lookup_account):
+        """
+        @see: TwitterAccountRelationshipViewSet.list 
+        """
+        social_account = SocialAccount.objects.get(id=parent_lookup_account)
+        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        
+        # get the followers and save all their profiles for later use 
+        followers = RelationshipUtils.fetch_followers(social_account, social_account.username)
+#         followers = json.load(open('/Users/moz/Desktop/data.json'))
+        RelationshipUtils.save_followers(followers, subject)
+        
+        
+        queryset = TwitterAccountRelationship.objects.filter(subject_id=subject.id)
+#         pobject = [i.__dict__ for i in queryset]
+#         print(pobject) 
+        serializer = TwitterAccountFollowerSerializer(queryset, many=True)
+        
+        return Response(serializer.data)
+        
        
 class SocialAccountTypeList(generics.ListCreateAPIView):
     model = SocialAccountType

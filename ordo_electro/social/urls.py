@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 
 from social.content import views
-from social.views import SocialAccountViewSet, SocialAccountTypeViewSet, TwitterAccountOverviewView, TwitterAccountViewSet, TwitterAccountRelationshipViewSet, oauth_redirect, oauth_verify
+from social.views import SocialAccountViewSet, SocialAccountTypeViewSet, TwitterAccountOverviewView, TwitterAccountViewSet, TwitterAccountRelationshipViewSet, oauth_redirect, oauth_verify, TwitterAccountFollowerViewSet
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 
@@ -21,13 +21,20 @@ TODO these need to be moved into a sub directory
                     parents_query_lookups=['relationship__subject', 'account'])
 )
 (
+    router.register(r'twitter/accounts',TwitterAccountViewSet,base_name='social-twitter-accounts',)
+          .register(r'followers',
+                    TwitterAccountFollowerViewSet,
+                    base_name='social-twitter-account-followers',
+                    parents_query_lookups=['relationship__subject', 'account'])
+)
+(
     router.register(r'accounts', SocialAccountViewSet,base_name='social-account',)
           .register(r'account_types',
                     SocialAccountTypeViewSet,
                     base_name='social-accounts-type',
                     parents_query_lookups=['account_types'])
                     
-) 
+)
 
 
 urlpatterns = patterns('',
