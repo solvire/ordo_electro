@@ -70,8 +70,10 @@ class TwitterAccountSerializer(serializers.ModelSerializer):
         model = TwitterAccount
         
 class TwitterAccountFollowerSerializer(serializers.ModelSerializer):
+    account = TwitterAccountSerializer(many=True, read_only=True)
     class Meta:
         model = TwitterAccountRelationship
+        
     
         
 class TwitterAccountRelationshipSerializer(serializers.ModelSerializer):

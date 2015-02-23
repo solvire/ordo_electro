@@ -28,6 +28,13 @@ TODO these need to be moved into a sub directory
                     parents_query_lookups=['relationship__subject', 'account'])
 )
 (
+    router.register(r'twitter/accounts',TwitterAccountViewSet,base_name='social-twitter-accounts',)
+          .register(r'friends',
+                    TwitterAccountFollowerViewSet,
+                    base_name='social-twitter-account-friends',
+                    parents_query_lookups=['relationship__target', 'account'])
+)
+(
     router.register(r'accounts', SocialAccountViewSet,base_name='social-account',)
           .register(r'account_types',
                     SocialAccountTypeViewSet,

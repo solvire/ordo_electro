@@ -8,6 +8,7 @@ from rest_framework import viewsets, generics, permissions
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework_extensions.mixins import NestedViewSetMixin
+from rest_framework_extensions.decorators import link
 
 from social.twitter.mapper import Mapper
 from social.twitter.relationship import RelationshipUtils
@@ -177,6 +178,25 @@ class TwitterAccountFollowerViewSet(NestedViewSetMixin, ModelViewSet):
 #         pobject = [i.__dict__ for i in queryset]
 #         print(pobject) 
         serializer = TwitterAccountFollowerSerializer(queryset, many=True)
+        
+        return Response(serializer.data)
+    
+    
+    
+class TwitterAccountFriendViewSet(NestedViewSetMixin, ModelViewSet):
+    serializer_class = TwitterAccountSerializer
+    model = TwitterAccount
+    
+    
+    def list(self, request,parent_lookup_account):
+        """
+        @see: TwitterAccountRelationshipViewSet.list 
+        """
+        social_account = SocialAccount.objects.get(id=parent_lookup_account)
+        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        
+        friends = TwitterAccountRelationship.objects.filter(subject=subject.twitter_account)
+        serializer = TwitterAccountFollowerSerializer(friends, many=True)
         
         return Response(serializer.data)
         

@@ -13,7 +13,7 @@ Created on Feb 21, 2015
 class RelationshipUtils():
 
     @staticmethod
-    def fetch_followers(social_account, screen_name=None):
+    def fetch_followers(social_account, screen_name=None, cursor=None):
         """
         Args are gor 
         Default action is to not store them here once we have them
@@ -32,22 +32,23 @@ class RelationshipUtils():
         
         twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET,
                           social_account.token,  social_account.secret)
-        followers = twitter.get_followers_list(screen_name=screen_name,count=200)
+#         followers = twitter.get_followers_list(screen_name=screen_name,count=200)
+        
+        followers = twitter.cursor(twitter.get_followers_list, screen_name=screen_name,count=200)
         
 #         print(json.dumps(followers))
         return followers
         
-        
-        
     @staticmethod
     def save_followers(followers, subject):
         """
-        Takes in a dictionary of followers to loop through. 
+        Takes in a generator of followers to loop through. 
         check out the documentation on the followers list from twitter for the form. 
         
         second parameter is a TwitterAccount object to assign the followers to
         """
-        for follower in followers['users']:
+        
+        for follower in followers:
 
             # then check to see if this profile account was created 
             ta,created = TwitterAccount.objects.get_or_create(twitter_id=follower['id'])

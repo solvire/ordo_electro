@@ -71,7 +71,9 @@ class TwitterAccount(models.Model):
     follow_request_sent = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-#     followers = models.ManyToOneRel('TwitterAccountRelationship', related_name='subject_id')
+    # rate limiting 
+    followers_updated = models.DateTimeField(auto_now=True)
+    friends_updated = models.DateTimeField(auto_now=True)
     
 
 class TwitterApiRequest(models.Model):
