@@ -55,6 +55,9 @@ class RelationshipUtils():
             if(created):
                 print("Created a new account holder for " + follower['name'])
             ta = Mapper.bindJson(follower,ta)
+            if ta.url is not None:
+                #https://github.com/StevenMaude/pyunshort
+                
             ta.save()
             
             # create the relationship 

@@ -44,15 +44,25 @@ The steps below will get you up and running with a local development environment
 * virtualenv
 * PostgreSQL
 * Memcache
+* RabbitMQ
 
 Install memcache if you don't have it
 
 	brew install libmemcached
 	brew install httpie # also useful
+	brew install rabbitmq # for celery 
 
 I'm using mysql so make sure that you have that running as well. Install it with brew. 
 
 http://blog.joefallon.net/2013/10/install-mysql-on-mac-osx-using-homebrew/
+
+Make sure if you install RabbitMQ with homebrew that you set up the path variables. It is installed in sbin.
+
+https://www.rabbitmq.com/install-homebrew.html
+
+start up RabbitMQ server (mac)
+
+	rabbitmq-server
 
 start mysql and add the database
 
