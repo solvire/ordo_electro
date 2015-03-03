@@ -6,10 +6,12 @@ Created on Mar 3, 2015
 from django.core.management.base import BaseCommand, CommandError
 from social.models import SocialAccount, TwitterAccountRelationship, TwitterAccount
 from optparse import make_option
-from datetime import datetime, timedelta, time
+from datetime import timedelta
+import time
 from django.utils import timezone
 
 from social.twitter.relationship import RelationshipUtils
+from social.twitter.util import TwitterAppliance
 
 class Command(BaseCommand):
     help = ('''Get all the followers for all these users' followers. It is a bit of a recursive crawl. 
@@ -59,11 +61,20 @@ class Command(BaseCommand):
                 WHERE
                 a.id = r.target_id and 
                 r.subject_id = 2723221604 and 
-                followers_count < 15000
+                followers_count < 20000
                 ORDER BY followers_count ASC''')
             
         for account in accounts:
             print("Mining followers of: " + account.screen_name + " with " + str(account.followers_count) + " followers ")
+            
+            
+            # check the rate limit here. 
+            appliance = TwitterAppliance(social_account)
+            
+            while appliance.isLimited(appliance.getRates(resources='followers'),'followers','/followers/list'):
+                print("Resting")
+                time.sleep(120)
+                
             peons = RelationshipUtils.fetch_followers(social_account,account.screen_name)
             RelationshipUtils.save_followers(peons, account)
             time.sleep(60)

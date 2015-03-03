@@ -1,9 +1,8 @@
-from django.conf import settings
 from twython import Twython,TwythonError
 from social.models import TwitterAccount, TwitterAccountRelationship
 from mapper import Mapper
 from social.utils import Utils
-import json
+from social.twitter.util import TwitterAppliance
 
 '''
 Created on Feb 21, 2015
@@ -31,8 +30,8 @@ class RelationshipUtils():
         if (screen_name == '' ): 
             raise Exception("screen_name is not set")
         
-        twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET,
-                          social_account.token,  social_account.secret)
+        appliance = TwitterAppliance(social_account)
+        twitter = appliance.getTwitter()
 #         followers = twitter.get_followers_list(screen_name=screen_name,count=200)
         
         followers = twitter.cursor(twitter.get_followers_list, screen_name=screen_name,count=200)
