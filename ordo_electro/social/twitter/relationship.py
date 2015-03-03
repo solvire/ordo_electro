@@ -2,6 +2,7 @@ from django.conf import settings
 from twython import Twython,TwythonError
 from social.models import TwitterAccount, TwitterAccountRelationship
 from mapper import Mapper
+from social.utils import Utils
 import json
 
 '''
@@ -40,7 +41,7 @@ class RelationshipUtils():
         return followers
         
     @staticmethod
-    def save_followers(followers, subject):
+    def save_followers(followers, subject, rate_limit=True):
         """
         Takes in a generator of followers to loop through. 
         check out the documentation on the followers list from twitter for the form. 
@@ -51,13 +52,17 @@ class RelationshipUtils():
         for follower in followers:
 
             # then check to see if this profile account was created 
-            ta,created = TwitterAccount.objects.get_or_create(twitter_id=follower['id'])
+            ta,created = TwitterAccount.objects.get_or_create(id=follower['id'])
             if(created):
                 print("Created a new account holder for " + follower['name'])
             ta = Mapper.bindJson(follower,ta)
+            # should we be careful hitting all their links... probably no throttle limit
             if ta.url is not None:
-                #https://github.com/StevenMaude/pyunshort
-                
+                url = Utils.unshorten_url(ta.url)
+                # keep it from being too long 
+                if(url > 100):
+                    url = url[:99] 
+                ta.url = url
             ta.save()
             
             # create the relationship 
@@ -65,6 +70,6 @@ class RelationshipUtils():
             tar.active = True
             tar.save()
             if(created):
-                print("Created an account relationship between " + subject.name + " AND " + ta.name)
+                print("Created an account relationship between " + subject.name + " AND " + ta.name + " id: " + str( ta.id))
             
             

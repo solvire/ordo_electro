@@ -61,7 +61,7 @@ def oauth_verify(request):
         print e
     
     # look up the record or create it if it doesn't exist 
-    twitter_account, created = TwitterAccount.objects.get_or_create(twitter_id=profile['id'])
+    twitter_account, created = TwitterAccount.objects.get_or_create(id=profile['id'])
     
     print('An account was updated for ' + str(profile['id']) + ' user: ' + profile['screen_name'])
     
@@ -136,7 +136,7 @@ class TwitterAccountRelationshipViewSet(NestedViewSetMixin, ModelViewSet):
         if 
         """
         social_account = SocialAccount.objects.get(id=parent_lookup_account)
-        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        subject = TwitterAccount.objects.get(id=social_account.account_id)
         
         # get the followers and save all their profiles for later use 
 #         followers = RelationshipUtils.fetch_followers(social_account, social_account.username)
@@ -166,7 +166,7 @@ class TwitterAccountFollowerViewSet(NestedViewSetMixin, ModelViewSet):
         @see: TwitterAccountRelationshipViewSet.list 
         """
         social_account = SocialAccount.objects.get(id=parent_lookup_account)
-        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        subject = TwitterAccount.objects.get(id=social_account.account_id)
         
         # get the followers and save all their profiles for later use 
         followers = RelationshipUtils.fetch_followers(social_account, social_account.username)
@@ -193,7 +193,7 @@ class TwitterAccountFriendViewSet(NestedViewSetMixin, ModelViewSet):
         @see: TwitterAccountRelationshipViewSet.list 
         """
         social_account = SocialAccount.objects.get(id=parent_lookup_account)
-        subject = TwitterAccount.objects.get(twitter_id=social_account.account_id)
+        subject = TwitterAccount.objects.get(id=social_account.account_id)
         
         friends = TwitterAccountRelationship.objects.filter(subject=subject.twitter_account)
         serializer = TwitterAccountFollowerSerializer(friends, many=True)

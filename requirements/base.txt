@@ -44,3 +44,4 @@ django-filter
 MySQL-python==1.2.5
 drf-extensions
 pyyaml
+django-redis

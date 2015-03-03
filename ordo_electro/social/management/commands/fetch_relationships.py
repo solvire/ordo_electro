@@ -4,9 +4,8 @@ Created on Feb 22, 2015
 @author: SS
 '''
 from django.core.management.base import BaseCommand
-from social.models import SocialAccount, TwitterAccountRelationship, TwitterAccount
+from social.models import SocialAccount, TwitterAccount
 from optparse import make_option
-import json
 
 from social.twitter.relationship import RelationshipUtils
 
@@ -36,8 +35,13 @@ class Command(BaseCommand):
         """
         # loop all of them then
         if options['twitter_account_id'] == None:
-            for social_account in SocialAccount.objects.filter():
-                print("Saving followers for: " + social_account.username)
-                twitter_account = TwitterAccount.objects.get(twitter_id=social_account.account_id)
-                followers = RelationshipUtils.fetch_followers(social_account)
-                RelationshipUtils.save_followers(followers, twitter_account)
+            accounts = SocialAccount.objects.filter()
+        else:
+            print("Running with twitter account " + options['twitter_account_id'])
+            accounts = SocialAccount.objects.filter(account_id=options['twitter_account_id'])
+            
+        for social_account in accounts:
+            print("Saving followers for: " + social_account.username)
+            twitter_account = TwitterAccount.objects.get(id=social_account.account_id)
+            followers = RelationshipUtils.fetch_followers(social_account)
+            RelationshipUtils.save_followers(followers, twitter_account)

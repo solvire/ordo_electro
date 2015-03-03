@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 print e
 
 
-            ta,created = TwitterAccount.objects.get_or_create(twitter_id=profile['id'])
+            ta,created = TwitterAccount.objects.get_or_create(id=profile['id'])
             if(created):
                 print("Created a new account holder for " + account.username)
             ta = Mapper.bindJson(profile,ta)

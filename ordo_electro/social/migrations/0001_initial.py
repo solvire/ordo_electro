@@ -88,11 +88,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TwitterAccount',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('twitter_id', models.BigIntegerField(unique=True)),
+                ('id', models.BigIntegerField(serialize=False, primary_key=True)),
                 ('name', models.CharField(max_length=20)),
                 ('screen_name', models.CharField(max_length=25)),
-                ('location', models.CharField(max_length=25, null=True)),
+                ('location', models.CharField(max_length=45, null=True)),
                 ('profile_location', models.CharField(max_length=45, null=True)),
                 ('url', models.CharField(max_length=100, null=True)),
                 ('description', models.CharField(max_length=160, null=True)),
@@ -103,7 +102,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(null=True)),
                 ('favourites_count', models.IntegerField(default=0)),
                 ('utc_offset', models.IntegerField(default=0, null=True)),
-                ('time_zone', models.CharField(max_length=15, null=True)),
+                ('time_zone', models.CharField(max_length=35, null=True)),
                 ('geo_enabled', models.BooleanField(default=False)),
                 ('verified', models.BooleanField(default=False)),
                 ('statuses_count', models.IntegerField(default=0)),
@@ -113,6 +112,8 @@ class Migration(migrations.Migration):
                 ('follow_request_sent', models.BooleanField(default=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
+                ('followers_updated', models.DateTimeField(auto_now=True)),
+                ('friends_updated', models.DateTimeField(auto_now=True)),
             ],
             options={
             },
@@ -130,6 +131,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('created',),
+                'db_table': 'social_twitter_account_relationship',
                 'verbose_name': 'Twitter Relationship',
                 'verbose_name_plural': 'Twitter Relationships',
             },

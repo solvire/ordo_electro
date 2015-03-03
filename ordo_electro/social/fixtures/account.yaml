@@ -22,6 +22,8 @@
     password: test123
     created: 2015-01-01T00:00:00
     updated: 2015-01-01T00:00:00
+    token: 2951695113-AkglGeQrXutpHkA7DzEpzwSDC3weLBVNA8yHJVL
+    secret: 45KJsFAZklfjCWWrqkviY0gRX1qm2BwsChvL2v3l6zUXa
     account_type: 1
 - model: social.SocialAccount
   pk: 3
@@ -31,4 +33,6 @@
     password: test234
     created: 2015-02-23T01:00:00
     updated: 2015-01-01T00:00:00
+    token: 2723221604-zS8LZqf93zaSUJjwTIiX8lGP5P6yHxTrczfRjbE
+    secret: Wcg66iT62gpErFsfVZA90K7bbnwdKkBjJIytHhf9e4uVP
     account_type: 1

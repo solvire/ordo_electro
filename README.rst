@@ -45,12 +45,14 @@ The steps below will get you up and running with a local development environment
 * PostgreSQL
 * Memcache
 * RabbitMQ
+* redis 
 
 Install memcache if you don't have it
 
 	brew install libmemcached
 	brew install httpie # also useful
 	brew install rabbitmq # for celery 
+	brew install redis # for caching 
 
 I'm using mysql so make sure that you have that running as well. Install it with brew. 
 
@@ -63,6 +65,10 @@ https://www.rabbitmq.com/install-homebrew.html
 start up RabbitMQ server (mac)
 
 	rabbitmq-server
+
+start the redis server 
+
+	redis-server
 
 start mysql and add the database
 

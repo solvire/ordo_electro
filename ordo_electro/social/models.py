@@ -39,6 +39,7 @@ class TwitterAccountRelationship(models.Model):
         ordering = ('created',)
         verbose_name = _('Twitter Relationship')
         verbose_name_plural = _('Twitter Relationships')
+        db_table = 'social_twitter_account_relationship'
     
 class TwitterAccount(models.Model):
     """
@@ -47,7 +48,7 @@ class TwitterAccount(models.Model):
     then when we take input from the UI that calls more data to show up on a particular 
     id that we will use that to populate this.  
     """
-    twitter_id = models.BigIntegerField(unique=True)
+    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=20)
     screen_name = models.CharField(max_length=25)
     location = models.CharField(max_length=45, null=True)
@@ -74,6 +75,14 @@ class TwitterAccount(models.Model):
     # rate limiting 
     followers_updated = models.DateTimeField(auto_now=True)
     friends_updated = models.DateTimeField(auto_now=True)
+        
+    def __unicode__(self):
+        return u'%s_%s' % (self.screen_name, self.id)
+    
+    class META:
+        verbose_name=_('Twitter Account')
+        verbose_name_plural=_('Twitter Accounts')
+        db_table='social_twitter_account'
     
 
 class TwitterApiRequest(models.Model):

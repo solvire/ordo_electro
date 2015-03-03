@@ -45,7 +45,7 @@ class SocialAccountTypeSerializer(serializers.ModelSerializer):
         
         
 class TwitterAccountSerializer(serializers.ModelSerializer):
-    twitter_id = serializers.IntegerField()
+    id = serializers.IntegerField()
     name = serializers.CharField()
     screen_name = serializers.CharField()
     location = serializers.CharField()
