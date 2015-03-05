@@ -61,7 +61,7 @@ class Command(BaseCommand):
                 WHERE
                 a.id = r.target_id and 
                 r.subject_id = 2723221604 and 
-                followers_count < 20000
+                followers_count BETWEEN 490 AND 25000
                 ORDER BY followers_count ASC''')
             
         for account in accounts:

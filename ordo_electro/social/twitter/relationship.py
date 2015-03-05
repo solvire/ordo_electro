@@ -57,12 +57,20 @@ class RelationshipUtils():
             ta = Mapper.bindJson(follower,ta)
             # should we be careful hitting all their links... probably no throttle limit
             if ta.url is not None:
-                url = Utils.unshorten_url(ta.url)
+                try:
+                    url = Utils.unshorten_url(ta.url)
+                except Exception: 
+                    pass
                 # keep it from being too long 
                 if(url > 100):
                     url = url[:99] 
                 ta.url = url
-            ta.save()
+            
+            try:
+                ta.save()
+            except Exception, e:
+                print("Failure to save record " + str(e))
+                continue
             
             # create the relationship 
             tar, created = TwitterAccountRelationship.objects.get_or_create(subject=subject, target=ta)
