@@ -18,6 +18,9 @@ from ConfigParser import RawConfigParser
 
 BASE_DIR = dirname(dirname(__file__))
 
+## for connecting to mongo
+from mongoengine import connect
+
 
 class Common(Configuration):
 
@@ -46,6 +49,7 @@ class Common(Configuration):
         'twython', #twython twitter API app
         'social', #tools for managing social content 
         'rest_framework', # for the django rest framework 
+        'mongoengine', 
     )
 
     # Apps specific for this project go here.
@@ -340,3 +344,4 @@ class Common(Configuration):
         'PAGINATE_BY': 10
     }
 
+connect('ordo_electro')

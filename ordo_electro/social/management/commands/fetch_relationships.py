@@ -8,6 +8,7 @@ from social.models import SocialAccount, TwitterAccount
 from optparse import make_option
 
 from social.twitter.relationship import RelationshipUtils
+from social.twitter.appliance import TwitterAppliance
 
 class Command(BaseCommand):
     help = ('''Get all the relationships for the accounts stored in the system. 
@@ -33,6 +34,7 @@ class Command(BaseCommand):
         Loop through each account and see if that account is set up and is valid. 
         if it comes back false mark the account as inactive and put a not on it.
         """
+        
         # loop all of them then
         if options['twitter_account_id'] == None:
             accounts = SocialAccount.objects.filter()
@@ -40,8 +42,10 @@ class Command(BaseCommand):
             print("Running with twitter account " + options['twitter_account_id'])
             accounts = SocialAccount.objects.filter(account_id=options['twitter_account_id'])
             
+        
         for social_account in accounts:
+            appliance = TwitterAppliance(social_account)
             print("Saving followers for: " + social_account.username)
             twitter_account = TwitterAccount.objects.get(id=social_account.account_id)
             followers = RelationshipUtils.fetch_followers(social_account)
-            RelationshipUtils.save_followers(followers, twitter_account)
+            RelationshipUtils.save_followers(followers, twitter_account, appliance )

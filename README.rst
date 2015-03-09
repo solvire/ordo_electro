@@ -46,6 +46,7 @@ The steps below will get you up and running with a local development environment
 * Memcache
 * RabbitMQ
 * redis 
+* MongoDB
 
 Install memcache if you don't have it
 
@@ -53,6 +54,7 @@ Install memcache if you don't have it
 	brew install httpie # also useful
 	brew install rabbitmq # for celery 
 	brew install redis # for caching 
+	brew install mongodb # saving the bulk stuff for later processing 
 
 I'm using mysql so make sure that you have that running as well. Install it with brew. 
 
@@ -75,6 +77,24 @@ start mysql and add the database
 	mysql.server start
 
 	CREATE DATABASE ordo_electro
+	
+Prep and start up MongoDB. You can store the data in another location, but you will need to alter the mongo settings. Ultimately this will be running on a server so this is only needed for dev environment settings.
+@see: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/ 
+
+	mkdir -p /data/db
+	
+"""
+To have launchd start mongodb at login:
+    ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+Then to load mongodb now:
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+Or, if you don't want/need launchctl, you can just run:
+    mongod --config /usr/local/etc/mongod.conf
+"""
+
+or simply run 
+
+	mongod 	
 
 Clone the repo
 

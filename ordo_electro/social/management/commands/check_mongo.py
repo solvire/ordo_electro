@@ -1,11 +1,11 @@
 '''
-Created on Mar 5, 2015
+Created on Mar 9, 2015
 
 @author: moz
 '''
 from django.core.management.base import BaseCommand
 from optparse import make_option
-from django.core.cache import cache
+from social.twitter.models import TwitterStatus
 
 
 class Command(BaseCommand):
@@ -27,8 +27,7 @@ class Command(BaseCommand):
         """
         Print out the keys 
         """
-        if options['cache_key'] == None:
-            raise Exception("Provide a key to search for or *")
-        
-        print(cache.get('limit'))
+        status = TwitterStatus.objects.get_or_create(status_id=123)
+#         status.tags = ['mongodb', 'mongoengine']
+        print(status[0].id)
     

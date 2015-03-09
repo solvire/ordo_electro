@@ -46,3 +46,5 @@ drf-extensions==0.2.7
 PyYAML==3.11
 django-redis==3.8.3
 numpy==1.9.2
+pymongo==2.8
+mongoengine==0.8.7
