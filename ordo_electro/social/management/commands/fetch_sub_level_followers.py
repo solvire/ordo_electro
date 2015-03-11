@@ -4,12 +4,13 @@ Created on Mar 3, 2015
 @author: SS
 '''
 from django.core.management.base import BaseCommand, CommandError
-from social.models import SocialAccount, TwitterAccount
-from optparse import make_option
-from datetime import timedelta
-import time
 from django.utils import timezone
 
+from optparse import make_option
+from datetime import timedelta, datetime
+import time
+
+from social.models import SocialAccount, TwitterAccount
 from social.twitter.relationship import RelationshipUtils
 from social.twitter.appliance import TwitterAppliance
 
@@ -47,7 +48,7 @@ class Command(BaseCommand):
         appliance = TwitterAppliance(social_account)
         
         # if its more than a 1/2 day old run it again 
-        if(twitter_account.followers_updated < timezone.now() - timedelta(hours=12) ):
+        if(twitter_account.followers_updated < timezone.now() - timedelta(days=5) ):
             followers = RelationshipUtils.fetch_followers(social_account)
             RelationshipUtils.save_followers(followers, twitter_account, appliance)
             twitter_account.followers_updated = timezone.now()
@@ -75,22 +76,27 @@ class Command(BaseCommand):
                 a.id = r.target_id and 
                 r.subject_id = %s and 
                 followers_count BETWEEN 5 AND 25000 AND 
-                followers_updated < DATE_SUB(NOW(),INTERVAL 1 DAY)
+                followers_updated < DATE_SUB(NOW(),INTERVAL 5 DAY)
                 ORDER BY followers_count ASC''', [twitter_account.id])
         
         for account in accounts:
             print("Mining followers of: " + account.screen_name + " with " + str(account.followers_count) + " followers ")
             
-            
             # check the rate limit here. 
             appliance = TwitterAppliance(social_account)
             
-            while appliance.hit_system_hard_limit('followers/list'):
-                resets_in = appliance.clock_resets_in('followers/list') + 60
-                print("Resting " + resets_in)
+            # if we are still on time out lets loop and see what is going on
+            while appliance.hit_system_hard_limit('followers/list', True):
+                resets_in = int(appliance.clock_resets_in('followers/list')) * 60 + 60
+                print("Resting for: " + str(resets_in) + " seconds " )
                 time.sleep(resets_in)
                 
-            peons = RelationshipUtils.fetch_followers(social_account,account.screen_name)
-            RelationshipUtils.save_followers(peons, account, appliance)
+            RelationshipUtils.save_followers(
+                        RelationshipUtils.fetch_followers(social_account,account.screen_name), 
+                        account, 
+                        appliance)
+            # throwing in a sleep here to throttle things down to a more manageable rate 
+            account.save()
             time.sleep(60)
+            account.followers_updated = datetime.utcnow()
         

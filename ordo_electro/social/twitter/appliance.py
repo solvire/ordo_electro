@@ -35,7 +35,10 @@ class TwitterAppliance:
                            self.social_account.token,  self.social_account.secret)
         return self.twitter
     
-    def get_rates(self,resources=None):
+    def get_rates(self,resources=None,endpoint=None):
+        # if no resources were provided try to get it from the endpoint 
+        if resources == None:
+            resources = self.rate_throttle.resource
         twitter = self.get_twitter()
         rates   = twitter.get_application_rate_limit_status(resources=resources)
         return rates
@@ -45,15 +48,33 @@ class TwitterAppliance:
         TODO move the rates part internal to this 
         
         See if the API is telling us to wait. 
-        this can be called more than other calls so we should hit it with a little more frquency. 
+        this can be called more than other calls so we should hit it with a little more frequency. 
         """
-        vals = rates['resources'][resource][endpoint]
-        if vals['remaining'] <= 1: return True
+        vals = rates['resources'][resource]['/' + endpoint]
+        print(str(vals['remaining']) + " hits left for " + resource + "/" + endpoint)
+        return vals['remaining'] > 0
+
+    def get_rate_remaining(self,rates,resource,endpoint):
+        """
+        TODO move the rates part internal to this 
         
-        print(str(vals['remaining']) + " hits left for " + resource)
-        return False;
+        See if the API is telling us to wait. 
+        this can be called more than other calls so we should hit it with a little more frequency. 
+        """
+        print(rates)
+        return rates['resources'][resource]['/' + endpoint]['remaining']
     
-    def hit_system_hard_limit(self,endpoint):
+    def get_rate_used(self,rates,resource,endpoint):
+        """
+        TODO move the rates part internal to this 
+        
+        This is not really what it used but more importantly how many have been used up in relation to the limit 
+        """
+        print(rates)
+        return int(self.rate_throttle.rate_limit_for_endpoint(endpoint)) - rates['resources'][resource]['/' + endpoint]['remaining']
+        
+    
+    def hit_system_hard_limit(self,endpoint, sync_with_twitter=False):
         """
         If we have his the internal system limit. 
         This should probably be moved into another system but for now it's okay in here.
@@ -66,13 +87,29 @@ class TwitterAppliance:
             See if this user is about to hit X times in the last few minutes 
             Return boolean if the user has hit or passed this rate limit 
         """
+        if sync_with_twitter:
+            # get the resource 
+            print('Syncing with twitter - ')
+            self.rate_throttle.set_endpoint(endpoint)
+            resource = self.rate_throttle.resource
+            
+            # set the proper amount we have used in relation to the limit count
+            rate_remaining = self.get_rate_used(self.get_rates(endpoint=endpoint),resource,endpoint )
+            self.set_endpoint_count(endpoint, rate_remaining)
+            
         return self.rate_throttle.hit_rate_limit(endpoint)
     
+    
     def clock_resets_in(self,endpoint):
-        self.rate_throttle.clock_resets_in(self.twitter, endpoint)
+        return self.rate_throttle.clock_resets_in(self.twitter, endpoint)
         
-    def increment_endpoint(self,endpoint):
+    def increment_endpoint_count(self,endpoint):
         self.rate_throttle.increment_cache_count(endpoint)
+        
+    def set_endpoint_count(self,endpoint, new_count):
+        if not str(new_count).isdigit():
+            raise TwitterApplianceException("New count is not a number ")
+        self.rate_throttle.set_cache_count(endpoint, new_count)
     
     
 class TwitterRateThrottle():
@@ -80,26 +117,39 @@ class TwitterRateThrottle():
     Used to limit the hits to twitter
     Should be consulted before each call to twitter 
     Can check out internal redis or can call the twitter API 
+    
+    We want to provide an endpoint but we probably shouldn't bind to one so that
+    we can assume that the data is fresh 
     """
     
     social_account  = None
     endpoint        = None
     matrix          = None
+    resource        = None
     
-    def __init__(self, social_account, endpoint=None):
+    def __init__(self, social_account):
         self.social_account = social_account
-        self.endpoint = endpoint
         self.matrix = TwitterRateMatrix()
+        
+    def set_endpoint(self,endpoint):
+        self.matrix.check_endpoint(endpoint)
+        self.endpoint = endpoint
+        self.resource = self.matrix.get_resource_for_endpoint(endpoint)
+        
     
     def hit_rate_limit(self, endpoint):
         """The current hits are greater than or equal to the twitter limits"""
-        limit = self.matrix.get_rate_for_endpoint(endpoint)
+        limit = self.rate_limit_for_endpoint(endpoint)
         current_count = self.get_cache_count(endpoint)
-        return current_count >= limit
+        # going to cut it off one early because we kept hitting our limits 
+        return current_count >= (int(limit) - 1)
+    
+    def rate_limit_for_endpoint(self, endpoint):
+        return self.matrix.get_rate_for_endpoint(endpoint)
         
     def get_cache_count(self, endpoint):
         """Get the hit count so far for this time window"""
-        # get the hits currently 
+        # get the hits currently
         return cache.get(self.get_cache_key(self.social_account, endpoint))
     
     def increment_cache_count(self, endpoint):
@@ -113,6 +163,12 @@ class TwitterRateThrottle():
         print("Setting cache = " + str(self.get_cache_key(self.social_account, endpoint)) + " new count " + str(new_count))
         return new_count
     
+    def set_cache_count(self, endpoint, new_count):
+        """Add one more hit to the cache"""
+        cache.set(self.get_cache_key(self.social_account, endpoint), new_count, timeout=60*30)
+        print("Setting hard cache = " + str(self.get_cache_key(self.social_account, endpoint)) + " new count " + str(new_count))
+        return new_count
+    
     def get_cache_key(self, social_account, endpoint):
         """
         KEY: social_account.id + hr_of_day + this_15min_window (integer) + endpoint
@@ -124,13 +180,10 @@ class TwitterRateThrottle():
     def clock_resets_in(self, twitter=None, endpoint=None):
         """In the future we should probably check twitter for a real live hard reset time"""
         now = datetime.datetime.now()
-        minutes_left = self.minutes_till_reset(now.minute)
-        # TODO twitter call here 
-        return minutes_left
+        return self.minutes_till_reset(now.minute)
     
-    def minutes_till_reset(self,minutes=None):
-        """I wont say this is concise or clever 
-        How many minutes till the next 15 minute block"""
+    def minutes_till_reset(self,minutes):
+        """How concise? - How many minutes till the next 15 minute block"""
         return (60 - minutes) % 15
         
 class TwitterRateMatrix():
@@ -180,11 +233,7 @@ class TwitterRateMatrix():
             ])
     
     def get_rate_for_endpoint(self, endpoint=None):
-        
-        if endpoint == None:
-            raise InvalidTwitterEndpointException(endpoint, "Provide an endpoint")
-        if endpoint != None and not self.is_valid_endpoint(endpoint):
-            raise InvalidTwitterEndpointException(endpoint, "The endpoint " + str(endpoint) + " is invalid ")
+        self.check_endpoint(endpoint)
         
         # loop them and if we find the endpoint key send the limit value 
         for rate in self.rates:
@@ -198,6 +247,19 @@ class TwitterRateMatrix():
         """Exact match to the 2nd column"""
         return endpoint in self.rates[:,1]
     
+    def get_resource_for_endpoint(self, endpoint):
+        self.check_endpoint(endpoint)
+        for rate in self.rates:
+            if endpoint in rate:
+                return rate[2]
+    
+    def check_endpoint(self, endpoint):
+        if endpoint == None:
+            raise InvalidTwitterEndpointException(endpoint, "Provide an endpoint")
+        if endpoint != None and not self.is_valid_endpoint(endpoint):
+            raise InvalidTwitterEndpointException(endpoint, "The endpoint " + str(endpoint) + " is invalid ")
+        
+        return True
     
         
 class TwitterApplianceException(Exception):

@@ -98,12 +98,13 @@ class RelationshipUtils():
             if rate_limit:
                 if count >= RelationshipUtils.follower_pull_count:
                     count = 0
-                    appliance.increment_endpoint('followers/list')
+                    # TODO not the best place for this. It needs to be in the appliance where the calls should go through 
+                    # TODO also we need to not use strings randomly and have keys for these endpoints 
+                    appliance.increment_endpoint_count('followers/list')
                     
+                # don't sync this with twitter... we hit it too much 
                 while appliance.hit_system_hard_limit('followers/list'):
-                    resets_in = appliance.clock_resets_in('followers/list') + 60
-                    print("Resting save " + resets_in)
+                    resets_in = appliance.clock_resets_in('followers/list') * 60 + 60
+                    print("Resting save " + str(resets_in))
                     time.sleep(resets_in)
                     
-            
-            
