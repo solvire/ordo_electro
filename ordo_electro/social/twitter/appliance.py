@@ -142,7 +142,7 @@ class TwitterRateThrottle():
         limit = self.rate_limit_for_endpoint(endpoint)
         current_count = self.get_cache_count(endpoint)
         # going to cut it off one early because we kept hitting our limits 
-        return current_count >= (int(limit) - 1)
+        return current_count >= (int(limit) - 2)
     
     def rate_limit_for_endpoint(self, endpoint):
         return self.matrix.get_rate_for_endpoint(endpoint)

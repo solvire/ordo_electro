@@ -96,6 +96,7 @@ class RelationshipUtils():
         
             # check the rate limits again if we hit 200 calls 
             if rate_limit:
+                time.sleep(1)
                 if count >= RelationshipUtils.follower_pull_count:
                     count = 0
                     # TODO not the best place for this. It needs to be in the appliance where the calls should go through 

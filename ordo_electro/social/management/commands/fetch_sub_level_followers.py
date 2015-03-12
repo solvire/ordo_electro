@@ -10,6 +10,8 @@ from optparse import make_option
 from datetime import timedelta, datetime
 import time
 
+from twython.exceptions import TwythonRateLimitError
+
 from social.models import SocialAccount, TwitterAccount
 from social.twitter.relationship import RelationshipUtils
 from social.twitter.appliance import TwitterAppliance
@@ -76,7 +78,7 @@ class Command(BaseCommand):
                 a.id = r.target_id and 
                 r.subject_id = %s and 
                 followers_count BETWEEN 5 AND 25000 AND 
-                followers_updated < DATE_SUB(NOW(),INTERVAL 5 DAY)
+                followers_updated < DATE_SUB(NOW(),INTERVAL 1 DAY)
                 ORDER BY followers_count ASC''', [twitter_account.id])
         
         for account in accounts:
@@ -91,12 +93,19 @@ class Command(BaseCommand):
                 print("Resting for: " + str(resets_in) + " seconds " )
                 time.sleep(resets_in)
                 
-            RelationshipUtils.save_followers(
+            try:
+                RelationshipUtils.save_followers(
                         RelationshipUtils.fetch_followers(social_account,account.screen_name), 
                         account, 
                         appliance)
+            except TwythonRateLimitError as e:
+                print(e.message)
+                time.sleep(15 * 60)
+            except Exception as e:
+                print(e.message)
+                
             # throwing in a sleep here to throttle things down to a more manageable rate 
             account.save()
-            time.sleep(60)
+            time.sleep(120)
             account.followers_updated = datetime.utcnow()
         
