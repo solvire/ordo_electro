@@ -47,7 +47,6 @@ class Common(Configuration):
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
         'twython', #twython twitter API app
-        'social', #tools for managing social content 
         'rest_framework', # for the django rest framework 
         'mongoengine', 
     )
@@ -56,6 +55,7 @@ class Common(Configuration):
     LOCAL_APPS = (
         'users',  # custom users app
         # Your stuff: custom apps go here
+        'social', #tools for managing social content 
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -141,7 +141,7 @@ class Common(Configuration):
 
     # GENERAL CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-    TIME_ZONE = 'America/Los_Angeles'
+    TIME_ZONE = 'UTC'
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
     LANGUAGE_CODE = 'en-us'

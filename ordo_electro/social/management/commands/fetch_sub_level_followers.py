@@ -78,7 +78,7 @@ class Command(BaseCommand):
                 a.id = r.target_id and 
                 r.subject_id = %s and 
                 followers_count BETWEEN 5 AND 25000 AND 
-                followers_updated < DATE_SUB(NOW(),INTERVAL 1 DAY)
+                followers_updated < DATE_SUB(NOW(),INTERVAL 4 DAY)
                 ORDER BY followers_count ASC''', [twitter_account.id])
         
         for account in accounts:

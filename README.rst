@@ -42,11 +42,30 @@ The steps below will get you up and running with a local development environment
 
 * pip
 * virtualenv
-* PostgreSQL
+* virtualenvwrapper
 * Memcache
 * RabbitMQ
 * redis 
 * MongoDB
+
+Installation on Linux boxes
+
+Installing pip and virtualenv on ubuntu
+
+	sudo yum install python26-pip 
+	sudo pip install virtualenv
+	sudo pip install virtualenvwrapper
+	mkdir ~/.virtualenvs
+	
+Install RabbitMQ on RH flavors 
+
+http://www.rabbitmq.com/install-rpm.html
+
+	yum install erlang
+	rpm -Uvh http://www.rabbitmq.com/releases/rabbitmq-server/v3.5.0/rabbitmq-server-3.5.0-1.noarch.rpm
+	chkconfig rabbitmq-server on
+	service rabbitmq-server start
+	
 
 Install memcache if you don't have it
 
